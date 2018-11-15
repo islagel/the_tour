@@ -1,0 +1,32 @@
+---
+title: "Scraping"
+output: html_document
+---
+```{r, include = FALSE}
+library(tidyverse)
+library(stringr)
+library(rvest)
+library(httr)
+```
+
+Loading in the data
+
+```{r}
+# checkout the website below first
+tour <- read_html("https://en.wikipedia.org/wiki/List_of_Tour_de_France_general_classification_winners")
+tables <- html_nodes(tour, css = "table") 
+tables  # have to guesstimate which table contains climate info
+tour_data <- html_table(tables, header = TRUE, fill = TRUE)[[3]]    
+# note: not html_text
+as_tibble(tour_data)
+head(tour_data, n=10)
+```
+
+
+Starting to clean the data. 
+```{r}
+tour_data %>%
+  mutate_all(funs(ifelse(.=="World War II", NA, .))) %>%
+  mutate_all(funs(ifelse(.=="World War I", NA, .)))
+
+```
