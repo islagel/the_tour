@@ -7,7 +7,7 @@ output: html_document
 ##Website(s) you plan to scrape
 
 We are interested in scraping data from Tour de France general classification winners.
-Websites include Wikipedia and a yet to be determined doping source.  We may merge another dataset on doping information, but that is yet to be found. 
+Websites include Wikipedia and a yet to be determined doping source.  When we find a source for doping informtion we will hopefully merge that dataset with the wikipedia information, but that is yet to be found. 
 
 ##Variables you plan to acquire, including variables you plan to generate from your raw data
 
