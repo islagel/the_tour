@@ -23,7 +23,20 @@ head(tour_data, n=10)
 ```
 
 
+#General Classification Riders
+(Not able to figure this out yet. Asking tomorrow)
+
+```{r}
+rec_stat <- read_html("https://en.wikipedia.org/wiki/Tour_de_France_records_and_statistics#Stage_wins_per_rider")
+
+stage_wins <- html_nodes(rec_stat, xpath = "//*[@id='mw-content-text']/div/table[3]")%>%
+  html_table(fill = TRUE)  
+
+
+```
+
 Starting to clean the data. 
+
 ```{r}
 tour_data %>%
   mutate_all(funs(ifelse(.=="World War II", NA, .))) %>%
@@ -31,7 +44,4 @@ tour_data %>%
 
 ```
 
-12345678
-I just changed this
 
-Im chanjahgsfiaurghfcouwiygb
