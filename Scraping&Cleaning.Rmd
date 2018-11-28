@@ -31,5 +31,97 @@ tour_data %>%
 
 ```
 
-12345678
-I just changed this
+
+Doping Information
+```{r}
+# checkout the website below first
+doping <- read_html("https://en.wikipedia.org/wiki/Doping_at_the_Tour_de_France")
+dopingtables <- html_nodes(doping, css = "table") 
+dopingtables  # have to guesstimate which table contains climate info
+doping_data <- html_table(dopingtables, header = TRUE, fill = TRUE)[[3]]    
+
+doping_tibble <- as_tibble(doping_data)
+doping_tibble
+head(doping_tibble, n=10)
+```
+
+
+Top 10 Winners
+```{r}
+doping <- read_html("https://en.wikipedia.org/wiki/Doping_at_the_Tour_de_France")
+dopingtables <- html_nodes(doping, css = "table") 
+dopingtables  # have to guesstimate which table contains climate info
+
+`1998_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[5]]
+`1998_tibble` <- as_tibble(`1998_data`)
+View(`1998_tibble`)
+
+`1999_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[6]]
+`1999_tibble` <- as_tibble(`1999_data`)
+View(`1999_tibble`)
+
+`2000_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[7]]
+`2000_tibble` <- as_tibble(`2000_data`)
+View(`2000_tibble`)
+
+`2001_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[8]]
+`2001_tibble` <- as_tibble(`2001_data`)
+View(`2001_tibble`)
+
+`2002_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[9]]
+`2002_tibble` <- as_tibble(`2002_data`)
+View(`2002_tibble`)
+
+`2003_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[10]]
+`2003_tibble` <- as_tibble(`2003_data`)
+View(`2003_tibble`)
+
+`2004_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[11]]
+`2004_tibble` <- as_tibble(`2004_data`)
+View(`2004_tibble`)
+
+`2005_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[12]]
+`2005_tibble` <- as_tibble(`2005_data`)
+View(`2005_tibble`)
+
+`2006_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[13]]
+`2006_tibble` <- as_tibble(`2006_data`)
+View(`2006_tibble`)
+
+`2007_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[14]]
+`2007_tibble` <- as_tibble(`2007_data`)
+View(`2007_tibble`)
+
+`2008_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[15]]
+`2008_tibble` <- as_tibble(`2008_data`)
+View(`2008_tibble`)
+
+`2009_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[16]]
+`2009_tibble` <- as_tibble(`2009_data`)
+View(`2009_tibble`)
+
+`2010_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[17]]
+`2010_tibble` <- as_tibble(`2010_data`)
+View(`2010_tibble`)
+
+`2011_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[18]]
+`2011_tibble` <- as_tibble(`2011_data`)
+View(`2011_tibble`)
+
+`2012_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[19]]
+`2012_tibble` <- as_tibble(`2012_data`)
+View(`2012_tibble`)
+
+`2013_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[20]]
+`2013_tibble` <- as_tibble(`2013_data`)
+View(`2013_tibble`)
+
+`2014_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[21]]
+`2014_tibble` <- as_tibble(`2014_data`)
+View(`2014_tibble`)
+
+`2015_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[22]]
+`2015_tibble` <- as_tibble(`2015_data`)
+View(`2015_tibble`)
+```
+
