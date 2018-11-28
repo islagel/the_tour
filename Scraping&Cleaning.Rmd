@@ -31,6 +31,7 @@ tour_data %>%
 
 ```
 
+<<<<<<< HEAD
 
 Doping Information
 ```{r}
@@ -125,3 +126,9 @@ View(`2014_tibble`)
 View(`2015_tibble`)
 ```
 
+=======
+12345678
+I just changed this
+
+Im chanjahgsfiaurghfcouwiygb
+>>>>>>> 72c9659733aed072f8ba5975a6ac4a40c3b13084
