@@ -30,3 +30,6 @@ tour_data %>%
   mutate_all(funs(ifelse(.=="World War I", NA, .)))
 
 ```
+
+
+I just changed this
