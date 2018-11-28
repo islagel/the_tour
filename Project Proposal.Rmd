@@ -1,7 +1,9 @@
 ---
 title: "Project Proposal"
 author: "Lisa Fisher and Isaac Slagel"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ##Website(s) you plan to scrape
