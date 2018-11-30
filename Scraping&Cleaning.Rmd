@@ -36,7 +36,6 @@ stage_wins <- html_nodes(rec_stat, xpath = "//*[@id='mw-content-text']/div/table
 ```
 
 Starting to clean the data. 
-
 ```{r}
 tour_data %>%
   mutate_all(funs(ifelse(.=="World War II", NA, .))) %>%
