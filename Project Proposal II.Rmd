@@ -1,0 +1,16 @@
+---
+title: "Project Proposal II"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Updates to your proposal – what has changed in terms of websites scraped, variables acquired and generated, questions addressed, visualizations planned, and format of your final product
+
+## An update on how your data scraping is coming; ideally you will have already put together your primary data set(s) by Dec 4
+
+## Names of files where I can find your R code
+
+

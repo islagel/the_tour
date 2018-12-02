@@ -23,19 +23,49 @@ head(tour_data, n=10)
 ```
 
 
-#General Classification Riders
+#Stage Wins per Rider
 (Not able to figure this out yet. Asking tomorrow)
 
 ```{r}
 rec_stat <- read_html("https://en.wikipedia.org/wiki/Tour_de_France_records_and_statistics#Stage_wins_per_rider")
+tables <- html_nodes(rec_stat, css = "table") 
+stages_per_rider<- html_text(tables)[[3]]
 
-stage_wins <- html_nodes(rec_stat, xpath = "//*[@id='mw-content-text']/div/table[3]")%>%
-  html_table(fill = TRUE)  
+stages_per_rider <- stages_per_rider %>%
+  str_split( "(\n)|(\\[14\\])") %>%
+  unlist()%>%
+  str_subset("(.)+")
 
 
+
+stages_per_rider <- c(stages_per_rider[1:40], 9, stages_per_rider[41:121])
+stages_per_rider <- c(stages_per_rider[1:44], 9, stages_per_rider[45:122])
+stages_per_rider <- c(stages_per_rider[1:60], 14, stages_per_rider[61:123])
+stages_per_rider <- c(stages_per_rider[1:68], 16, stages_per_rider[69:124])
+stages_per_rider <- c(stages_per_rider[1:72], 16, stages_per_rider[73:125])
+stages_per_rider <- c(stages_per_rider[1:76], 16, stages_per_rider[77:126])
+stages_per_rider <- c(stages_per_rider[1:80], 16, stages_per_rider[81:127])
+stages_per_rider <- c(stages_per_rider[1:88], 21, stages_per_rider[89:128])
+stages_per_rider <- c(stages_per_rider[1:92], 21, stages_per_rider[93:129])
+stages_per_rider <- c(stages_per_rider[1:96], 21, stages_per_rider[97:130])
+stages_per_rider <- c(stages_per_rider[1:100], 21, stages_per_rider[101:128])
+stages_per_rider <- c(stages_per_rider[1:108], 26, stages_per_rider[109:129])
+stages_per_rider <- c(stages_per_rider[1:112], 26, stages_per_rider[113:130])
+stages_per_rider <- c(stages_per_rider[1:116], 26, stages_per_rider[117:131])
+stages_per_rider <- c(stages_per_rider[1:120], 26, stages_per_rider[121:132])
+stages_per_rider <- c(stages_per_rider[1:124], 26, stages_per_rider[125:133])
+stages_per_rider <- c(stages_per_rider[1:128], 26, stages_per_rider[129:134])
+stages_per_rider <- c(stages_per_rider[1:132], 26, stages_per_rider[133:135])
+
+stages_per_rider <- as.tibble(matrix(stages_per_rider, byrow = TRUE, ncol = 4))
+
+colnames(stages_per_rider) <- stages_per_rider[1,]
+
+stages_per_rider <- stages_per_rider[-1,]
+stages_per_rider
 ```
 
-Starting to clean the data. 
+Removing the World wars from the winners data .
 ```{r}
 tour_data %>%
   mutate_all(funs(ifelse(.=="World War II", NA, .))) %>%
