@@ -96,76 +96,95 @@ dopingtables <- html_nodes(doping, css = "table")
 dopingtables  # have to guesstimate which table contains climate info
 
 `1998_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[5]]
-`1998_tibble` <- as_tibble(`1998_data`)
-View(`1998_tibble`)
+`1998_tibble` <- as_tibble(`1998_data`) %>% 
+  add_column(Year = rep("1998", 10), .before = "Rank")
+
 
 `1999_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[6]]
-`1999_tibble` <- as_tibble(`1999_data`)
-View(`1999_tibble`)
+`1999_tibble` <- as_tibble(`1999_data`)%>% 
+  add_column(Year = rep("1999", 10), .before = "Rank")
+
 
 `2000_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[7]]
-`2000_tibble` <- as_tibble(`2000_data`)
-View(`2000_tibble`)
+`2000_tibble` <- as_tibble(`2000_data`)%>% 
+  add_column(Year = rep("2000", 10), .before = "Rank")
+
 
 `2001_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[8]]
-`2001_tibble` <- as_tibble(`2001_data`)
-View(`2001_tibble`)
+`2001_tibble` <- as_tibble(`2001_data`)%>% 
+  add_column(Year = rep("2001", 10), .before = "Rank")
+
 
 `2002_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[9]]
-`2002_tibble` <- as_tibble(`2002_data`)
-View(`2002_tibble`)
+`2002_tibble` <- as_tibble(`2002_data`)%>% 
+  add_column(Year = rep("2002", 10), .before = "Rank")
+
 
 `2003_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[10]]
-`2003_tibble` <- as_tibble(`2003_data`)
-View(`2003_tibble`)
+`2003_tibble` <- as_tibble(`2003_data`)%>% 
+  add_column(Year = rep("2003", 10), .before = "Rank")
+
 
 `2004_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[11]]
-`2004_tibble` <- as_tibble(`2004_data`)
-View(`2004_tibble`)
+`2004_tibble` <- as_tibble(`2004_data`)%>% 
+  add_column(Year = rep("2004", 10), .before = "Rank")
+
 
 `2005_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[12]]
-`2005_tibble` <- as_tibble(`2005_data`)
-View(`2005_tibble`)
+`2005_tibble` <- as_tibble(`2005_data`) %>% 
+  add_column(Year = rep("2005", 11), .before = "Rank")
+
 
 `2006_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[13]]
-`2006_tibble` <- as_tibble(`2006_data`)
-View(`2006_tibble`)
+`2006_tibble` <- as_tibble(`2006_data`)%>% 
+  add_column(Year = rep("2006", 10), .before = "Rank")
+
 
 `2007_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[14]]
-`2007_tibble` <- as_tibble(`2007_data`)
-View(`2007_tibble`)
+`2007_tibble` <- as_tibble(`2007_data`)%>% 
+  add_column(Year = rep("2007", 10), .before = "Rank")
+
 
 `2008_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[15]]
-`2008_tibble` <- as_tibble(`2008_data`)
-View(`2008_tibble`)
+`2008_tibble` <- as_tibble(`2008_data`)%>% 
+  add_column(Year = rep("2008", 10), .before = "Rank")
+
 
 `2009_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[16]]
-`2009_tibble` <- as_tibble(`2009_data`)
-View(`2009_tibble`)
+`2009_tibble` <- as_tibble(`2009_data`)%>% 
+  add_column(Year = rep("2009", 10), .before = "Rank")
+
 
 `2010_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[17]]
-`2010_tibble` <- as_tibble(`2010_data`)
-View(`2010_tibble`)
+`2010_tibble` <- as_tibble(`2010_data`)%>% 
+  add_column(Year = rep("2010", 10), .before = "Rank")
+
 
 `2011_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[18]]
-`2011_tibble` <- as_tibble(`2011_data`)
-View(`2011_tibble`)
+`2011_tibble` <- as_tibble(`2011_data`)%>% 
+  add_column(Year = rep("2011", 10), .before = "Rank")
+
 
 `2012_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[19]]
-`2012_tibble` <- as_tibble(`2012_data`)
-View(`2012_tibble`)
+`2012_tibble` <- as_tibble(`2012_data`)%>% 
+  add_column(Year = rep("2012", 10), .before = "Rank")
+
 
 `2013_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[20]]
-`2013_tibble` <- as_tibble(`2013_data`)
-View(`2013_tibble`)
+`2013_tibble` <- as_tibble(`2013_data`)%>% 
+  add_column(Year = rep("2013", 10), .before = "Rank")
+
 
 `2014_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[21]]
-`2014_tibble` <- as_tibble(`2014_data`)
-View(`2014_tibble`)
+`2014_tibble` <- as_tibble(`2014_data`)%>% 
+  add_column(Year = rep("2014", 10), .before = "Rank")
+
 
 `2015_data` <- html_table(dopingtables, header = TRUE, fill = TRUE)[[22]]
-`2015_tibble` <- as_tibble(`2015_data`)
-View(`2015_tibble`)
+`2015_tibble` <- as_tibble(`2015_data`)%>% 
+  add_column(Year = rep("2015", 10), .before = "Rank")
+
+ top_tens <- bind_rows(`1998_tibble`, `1999_tibble`, `2000_tibble`, `2001_tibble`, `2002_tibble`, `2003_tibble`, `2004_tibble`, `2005_tibble`, `2006_tibble`, `2007_tibble`, `2008_tibble`, `2009_tibble`, `2010_tibble`, `2011_tibble`, `2012_tibble`, `2013_tibble`, `2014_tibble`, `2015_tibble`)
 ```
 
 
