@@ -45,11 +45,11 @@ New questions we are able to address are:
 How has doping disqualifications have changed the top 10 finishers of Tour in a given year?
 How many more athletes confess to doping vs testing positive? 
 
-In general we are better set to answer the questions mentioned in the original preliminary report. 
+In general, don't have many more questions but we are better set to answer the questions mentioned in the original preliminary report. 
 
 ## An update on how your data scraping is coming; ideally you will have already put together your primary data set(s) by Dec 4
 
-Well. We have scraped all data and plan to have relevant data merged before class on Tuesday. 
+We have scraped all data and plan to have relevant data merged before class on Tuesday. 
 
 ## Names of files where I can find your R code
 
