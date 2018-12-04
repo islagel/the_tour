@@ -67,7 +67,7 @@ stages_per_rider
 
 Removing the World wars from the winners data .
 ```{r}
-tour_data %>%
+tour_data <- tour_data %>%
   mutate_all(funs(ifelse(.=="World War II", NA, .))) %>%
   mutate_all(funs(ifelse(.=="World War I", NA, .)))
 
@@ -184,7 +184,20 @@ dopingtables  # have to guesstimate which table contains climate info
 `2015_tibble` <- as_tibble(`2015_data`)%>% 
   add_column(Year = rep("2015", 10), .before = "Rank")
 
- top_tens <- bind_rows(`1998_tibble`, `1999_tibble`, `2000_tibble`, `2001_tibble`, `2002_tibble`, `2003_tibble`, `2004_tibble`, `2005_tibble`, `2006_tibble`, `2007_tibble`, `2008_tibble`, `2009_tibble`, `2010_tibble`, `2011_tibble`, `2012_tibble`, `2013_tibble`, `2014_tibble`, `2015_tibble`)
+top_tens <- bind_rows(`1998_tibble`, `1999_tibble`, `2000_tibble`, `2001_tibble`, `2002_tibble`, `2003_tibble`, `2004_tibble`, `2005_tibble`, `2006_tibble`, `2007_tibble`, `2008_tibble`, `2009_tibble`, `2010_tibble`, `2011_tibble`, `2012_tibble`, `2013_tibble`, `2014_tibble`, `2015_tibble`)
 ```
+
+
+```{r}
+setwd("~/Mscs 264 F18/Submit Section B/TourProject")
+write_rds(top_tens, "top_tens.rds")
+write_rds(top_tens, "top_tens.rds")
+write_rds(doping_tibble, "doping_tibble.rds")
+write_rds(doping_tibble, "doping_tibble.rds")
+write_rds(tour_data, "tour_data.rds")
+```
+
+
+
 
 
