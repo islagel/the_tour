@@ -208,8 +208,7 @@ top_tencomments <- read_csv("~/Mscs 264 F18/Submit Section B/Project/the_tour/to
 
 mergedtop_tens <- top_tens %>%
   mutate(Year = as.integer(Year)) %>%
-  left_join(top_tencomments) %>%
-  mutate()
+  left_join(top_tencomments)
 ```
 
 
