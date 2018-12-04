@@ -195,6 +195,20 @@ write_rds(top_tens, "top_tens.rds")
 write_rds(doping_tibble, "doping_tibble.rds")
 write_rds(doping_tibble, "doping_tibble.rds")
 write_rds(tour_data, "tour_data.rds")
+write_csv(top_tens, "top_tens.csv")
+```
+
+
+##Comments for top_tens
+
+```{r}
+top_tencomments <- read_csv("~/Mscs 264 F18/Submit Section B/Project/the_tour/top_tencomments.csv")
+
+
+
+mergedtop_tens <- top_tens %>%
+  mutate(Year = as.integer(Year)) %>%
+  left_join(top_tencomments)
 ```
 
 
