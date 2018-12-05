@@ -1,26 +1,24 @@
 ---
-title: "Shiny_Tour"
+title: "le Tour de France"
 runtime: shiny
 output: html_document
 ---
 
-```{r, include  = FALSE}
-library(tidyverse)
-
-```
-
 ```{r setup, include=FALSE}
+library(tidyverse)
+library(maps)
+library(plotly)
 knitr::opts_chunk$set(echo = TRUE)
 top_tens <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/top_tens.rds"))
 doping_tibble <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/doping_tibble.rds"))
 tour_data <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/tour_data.rds"))
-library(tidyverse)
-library(maps)
+
+
 ```
 
 
 
-```{r eruptions, echo=FALSE}
+```{r , echo=FALSE}
 inputPanel(
   checkboxInput("doped", label = "Exclude Doped Winners",FALSE)
 )
@@ -29,6 +27,22 @@ renderPlot({
 WorldData <- map_data('world')
 WorldData %>% filter(region != "Antarctica") -> WorldData
 WorldData <- fortify(WorldData)
+
+a <-  if(input$doped){tour_data %>%
+  left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
+  filter(Status == "Never failed tests") %>%
+  mutate(Country = ifelse(Country=="United States", "USA", Country))%>%
+  mutate(Country = ifelse(Country=="United Kingdom", "UK", Country))%>%
+  group_by(Country) %>%
+  count()
+  } else{
+    tour_data %>%
+  left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
+  mutate(Country = ifelse(Country=="United States", "USA", Country))%>%
+  mutate(Country = ifelse(Country=="United Kingdom", "UK", Country))%>%
+  group_by(Country) %>%
+  count()
+  } 
 
 ggplot()+
   geom_map(data=WorldData, map=WorldData,
@@ -45,35 +59,6 @@ ggplot()+
 })
 ```
 
-
-
-```{r}
-
-a <-  tour_data %>%
-  left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
-  mutate(Country = ifelse(Country=="United States", "USA", Country))%>%
-  mutate(Country = ifelse(Country=="United Kingdom", "UK", Country)) %>%
-  group_by(Country) %>%
-  count() 
-  
-
-a
-```
-
-```{r tabsets, echo=FALSE}
-shinyAppDir(
-  system.file("examples/06_tabsets", package = "shiny"),
-  options = list(
-    width = "100%", height = 550
-  )
-)
-```
-
-Note the use of the `height` parameter to determine how much vertical space the embedded application should occupy.
-
-You can also use the `shinyApp` function to define an application inline rather then in an external directory.
-
-In all of R code chunks above the `echo = FALSE` attribute is used. This is to prevent the R code within the chunk from rendering in the document alongside the Shiny components.
 
 
 ##Barplot of Top Ten
