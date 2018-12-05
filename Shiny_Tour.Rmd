@@ -4,6 +4,11 @@ runtime: shiny
 output: html_document
 ---
 
+```{r, include  = FALSE}
+library(tidyverse)
+
+```
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 top_tens <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/top_tens.rds"))
@@ -74,7 +79,9 @@ In all of R code chunks above the `echo = FALSE` attribute is used. This is to p
 ##Barplot of Top Ten
 
 ```{r}
-top_tencomments <- read_csv("~/Mscs 264 F18/Submit Section B/Project/the_tour/top_tencomments.csv")
+##top_tencomments <- read_csv("~/Mscs 264 F18/Submit Section B/Project/the_tour/top_tencomments.csv")
+##Isaac
+top_tencomments <- read_csv("~/Mscs 264 F18/Submit Section B/TourProject/top_tencomments.csv")
 
 mergedtop_tens <- top_tens %>%
   mutate(Year = as.integer(Year)) %>%
