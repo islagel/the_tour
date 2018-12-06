@@ -61,22 +61,28 @@ ggplot()+
 
 
 
+
 ##Barplot of Top Ten
 
-```{r}
-##top_tencomments <- read_csv("~/Mscs 264 F18/Submit Section B/Project/the_tour/top_tencomments.csv")
-##Isaac
-top_tencomments <- read_csv("~/Mscs 264 F18/Submit Section B/TourProject/top_tencomments.csv")
+```{r, echo = FALSE}
+inputPanel(
+  checkboxGroupInput("x", label = "Fill variable:",
+    choices = c("Stripped" = "Stripped of title in the current race due to doping.",
+                "Failed Tests at Some Point" = "Failed tests for doping in another competition or out of competition at some point in their career.",
+                "Sanctioned for Doping, No Failed Tests" = "Sanctioned for doping without failed tests at some point in their career.",
+                "Admitted, No Failed Tests" = "Admitted to doping without failed tests or sanction for the current race.",
+                "Accused, No Failed Tests" = "Accused of doping without failed tests, sanction or admittance in their career.",
+                "Clean" = "Has never been: stripped of a title, failed tests or sanctioned for doping to date, with no known accusations."), 
+    selected = "Stripped of title in the current race due to doping.")
+)
 
-mergedtop_tens <- top_tens %>%
-  mutate(Year = as.integer(Year)) %>%
-  left_join(top_tencomments)
-
-
-mergedtop_tens %>%
-    ggplot(aes(x=Year, fill = Notes2)) +
-    geom_bar(position = "fill")
-
+renderPlot({
+  mergedtop_tens %>%
+    filter(Notes2 == input$x) %>%
+    ggplot() + 
+      geom_bar(mapping = aes(x = Year, fill = Notes2), 
+               position = "stack", stat = "count")})
+    
 ```
 
 
