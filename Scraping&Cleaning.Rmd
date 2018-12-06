@@ -202,13 +202,13 @@ write_csv(top_tens, "top_tens.csv")
 ##Comments for top_tens
 
 ```{r}
-top_tencomments <- read_csv("~/Mscs 264 F18/Submit Section B/Project/the_tour/top_tencomments.csv")
-
-
+top_tencomments <- read_csv("~/Mscs 264 F18/Submit Section B/TourProject/top_tencomments.csv")
 
 mergedtop_tens <- top_tens %>%
   mutate(Year = as.integer(Year)) %>%
   left_join(top_tencomments)
+
+write_rds(mergedtop_tens, "mergedtop_tens.rds")
 ```
 
 

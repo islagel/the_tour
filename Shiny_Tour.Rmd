@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 top_tens <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/top_tens.rds"))
 doping_tibble <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/doping_tibble.rds"))
 tour_data <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/tour_data.rds"))
-
+mergedtop_tens<- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/mergedtop_tens.rds"))
 
 ```
 
