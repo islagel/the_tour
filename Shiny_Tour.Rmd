@@ -92,7 +92,8 @@ inputPanel(checkboxGroupInput("x", label = "Fill variable:",
 
 renderPlot({
   mergedtop_tens %>%
-    filter(Notes2 == input$x) %>%
+    filter(Notes2 %in% input$x,
+           Rank != 11) %>%
     ggplot() + 
       geom_bar(mapping = aes(x = Year, fill = Notes2), 
                position = "stack", stat = "count")+
