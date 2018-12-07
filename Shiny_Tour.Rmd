@@ -91,23 +91,33 @@ renderPlot({
 inputPanel(
   sliderInput("slider1", label = h3("Year"), min = 1998, 
         max = 2015, value = c(1998, 2015), sep = ""),
-  textInput("text", label = h3("Key Words"), value = "")
+  textInput("text", label = h3("Key Words"), value = " ")
 )
 
 renderTable({ 
 top_tens %>% 
-  select(-Rider) %>%
   mutate(Time = str_replace(Time, "^[^\\+](.*)", "Winner"))%>%
   mutate(Notes = ifelse(is.na(.$Notes)," ", .$Notes))%>%
-  filter(Notes %in% Notes[str_detect(.$Notes, input$text)]) %>%
+  filter(Notes %in% Notes[str_detect(.$Notes, input$text)] | 
+         Name %in% Name[str_detect(.$Name, input$text)] | 
+         Team %in% Team[str_detect(.$Team, input$text)]) %>%
   mutate(Year = parse_integer(Year)) %>%
   filter(Rank <= 10) %>%
-  filter(Year >= input$slider1[1], Year <= input$slider1[2]) %>%
-  filter(Notes == str_subset(Notes, input$text))
+  filter(Year >= input$slider1[1], Year <= input$slider1[2])
 }) 
-
 
 ```
 
+
+
+###What does it take to win? 
+
+```{r}
+
+
+tour_data
+
+
+```
 
 
