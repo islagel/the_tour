@@ -66,14 +66,14 @@ ggplot()+
 
 ```{r, echo = FALSE}
 inputPanel(
-  checkboxGroupInput("x", label = "Fill variable:",
-    choices = c("Stripped of Title" = "Stripped of title in the current race due to doping.",
-                "Failed Tests at Some Point" = "Failed tests for doping in another competition or out of competition at some point in their career.",
-                "Sanctioned for Doping, No Failed Tests" = "Sanctioned for doping without failed tests at some point in their career.",
-                "Admitted, No Failed Tests" = "Admitted to doping without failed tests or sanction for the current race.",
+  checkboxGroupInput("x", label = "Status:",
+    choices = c("Admitted, No Failed Tests" = "Admitted to doping without failed tests or sanction for the current race.",
                 "Accused, No Failed Tests" = "Accused of doping without failed tests, sanction or admittance in their career.",
-                "Clean" = "Has never been: stripped of a title, failed tests or sanctioned for doping to date, with no known accusations."), 
-    selected = "Has never been: stripped of a title, failed tests or sanctioned for doping to date, with no known accusations.")
+                "Failed Tests at Some Point" = "Failed tests for doping in another competition or out of competition at some point in their career.",
+                 "Clean" = "Has never been: stripped of a title, failed tests or sanctioned for doping to date, with no known accusations.",
+                "Sanctioned for Doping, No Failed Tests" = "Sanctioned for doping without failed tests at some point in their career.",
+                "Stripped of Title" = "Stripped of title in the current race due to doping."),
+    selected = "Admitted to doping without failed tests or sanction for the current race.")
 )
 
 
@@ -85,9 +85,12 @@ renderPlot({
     ggplot() + 
       geom_bar(mapping = aes(x = Year, fill = Notes2), 
                position = "stack", stat = "count")+
+    scale_y_continuous(breaks=seq(0,10,1)) +
     coord_cartesian(ylim= c(0,10),
                     xlim = c(1998,2015)) +
-    theme_bw()
+    theme_dark() +
+    scale_fill_brewer(palette="RdYlBu") +
+    labs(fill = "Status")
 })
     
 ```
