@@ -18,6 +18,16 @@ mergedtop_tens<- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/
 
 
 
+
+
+
+
+
+
+
+
+#Map of Medal Count and Country
+
 ```{r , echo=FALSE}
 inputPanel(
   checkboxInput("doped", label = "Exclude Doped Winners", FALSE),
@@ -75,9 +85,33 @@ ggplot()+
 ```
 
 
+##Medal Count and Country
+```{r, echo = FALSE}
+inputPanel(
+  selectInput("b", label = "Countries:", c(tour_data$Country), multiple = TRUE)
+)
 
 
-##Barplot of Top Ten
+tour_data2 <- tour_data %>%
+  group_by(Country) %>%
+  summarize(Count = n()) 
+
+renderPlot({tour_data2 %>%
+    filter(Country %in% input$b) %>%
+    ggplot(mapping = aes(x = Country, y = Count), color = "red") +
+    geom_bar(stat = "identity")
+})
+
+
+
+
+
+```
+
+
+
+
+##Categories of Doping in the Top Ten Finishers: 1998-2015
 
 ```{r, echo = FALSE}
 inputPanel(checkboxGroupInput("x", label = "Fill variable:",
@@ -100,17 +134,19 @@ renderPlot({
     scale_y_continuous(breaks=seq(0,10,1)) +
     coord_cartesian(ylim= c(0,10),
                     xlim = c(1998,2015)) +
-    theme_dark() +
-    scale_fill_brewer(palette="RdYlBu") +
-    labs(fill = "Status")
+    theme_bw() +
+    scale_fill_brewer(palette="Set2") +
+    labs(fill = "Status") +
+    theme(legend.box.background = element_rect(colour = "black"))
 })
             
     
 ```
 
 
-```{r, echo = FALSE}
 
+
+```{r, echo = FALSE}
 inputPanel(
   sliderInput("slider1", label = h3("Year"), min = 1998, 
         max = 2015, value = c(1998, 2015), sep = ""),
