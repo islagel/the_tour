@@ -20,7 +20,8 @@ mergedtop_tens<- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/
 
 ```{r , echo=FALSE}
 inputPanel(
-  checkboxInput("doped", label = "Exclude Doped Winners",FALSE)
+  checkboxInput("doped", label = "Exclude Doped Winners", FALSE),
+  checkboxInput("europe", label = "Just Europe", FALSE)
 )
 
 renderPlot({ 
@@ -44,6 +45,7 @@ a <-  if(input$doped){tour_data %>%
   count()
   } 
 
+if(input$europe){
 ggplot()+
   geom_map(data=WorldData, map=WorldData,
                   aes(x=long, y=lat, group=group, map_id=region),
@@ -54,8 +56,21 @@ ggplot()+
   theme_void()+
   scale_fill_continuous(low="thistle2", high="darkred", 
                                guide="colorbar")+
+  labs(fill="legend", title="Number of Winners by Country", x="", y="")+
+    lims(x = c(-10, 20), y = c(35, 58))
+} else {
+  ggplot()+
+  geom_map(data=WorldData, map=WorldData,
+                  aes(x=long, y=lat, group=group, map_id=region),
+                  fill="white", colour="#7f7f7f", size=0.5)+
+  geom_map(data=a, map=WorldData,
+                  aes(fill=n, map_id=Country),
+                  colour="#7f7f7f", size=0.5)+
+  theme_void()+
+  scale_fill_continuous(low="thistle2", high="darkred", 
+                               guide="colorbar")+
   labs(fill="legend", title="Number of Winners by Country", x="", y="")
- 
+}
 })
 ```
 
@@ -65,23 +80,19 @@ ggplot()+
 ##Barplot of Top Ten
 
 ```{r, echo = FALSE}
-inputPanel(
-  checkboxGroupInput("x", label = "Status:",
-    choices = c("Admitted, No Failed Tests" = "Admitted to doping without failed tests or sanction for the current race.",
-                "Accused, No Failed Tests" = "Accused of doping without failed tests, sanction or admittance in their career.",
+inputPanel(checkboxGroupInput("x", label = "Fill variable:",
+    choices = c("Stripped" = "Stripped of title in the current race due to doping.",
                 "Failed Tests at Some Point" = "Failed tests for doping in another competition or out of competition at some point in their career.",
-                 "Clean" = "Has never been: stripped of a title, failed tests or sanctioned for doping to date, with no known accusations.",
                 "Sanctioned for Doping, No Failed Tests" = "Sanctioned for doping without failed tests at some point in their career.",
-                "Stripped of Title" = "Stripped of title in the current race due to doping."),
-    selected = "Admitted to doping without failed tests or sanction for the current race.")
+                "Admitted, No Failed Tests" = "Admitted to doping without failed tests or sanction for the current race.",
+                "Accused, No Failed Tests" = "Accused of doping without failed tests, sanction or admittance in their career.",
+                "Clean" = "Has never been: stripped of a title, failed tests or sanctioned for doping to date, with no known accusations."), 
+    selected = "Stripped of title in the current race due to doping.")
 )
-
-
 
 renderPlot({
   mergedtop_tens %>%
-    filter(Rank != 11,
-           Notes2 %in% input$x) %>%
+    filter(Notes2 == input$x) %>%
     ggplot() + 
       geom_bar(mapping = aes(x = Year, fill = Notes2), 
                position = "stack", stat = "count")+
@@ -92,6 +103,7 @@ renderPlot({
     scale_fill_brewer(palette="RdYlBu") +
     labs(fill = "Status")
 })
+            
     
 ```
 
@@ -101,23 +113,61 @@ renderPlot({
 inputPanel(
   sliderInput("slider1", label = h3("Year"), min = 1998, 
         max = 2015, value = c(1998, 2015), sep = ""),
-  textInput("text", label = h3("Key Words"), value = "")
+  textInput("text", label = h3("Key Words"), value = " ")
 )
 
 renderTable({ 
 top_tens %>% 
-  select(-Rider) %>%
   mutate(Time = str_replace(Time, "^[^\\+](.*)", "Winner"))%>%
   mutate(Notes = ifelse(is.na(.$Notes)," ", .$Notes))%>%
-  filter(Notes %in% Notes[str_detect(.$Notes, input$text)]) %>%
+  filter(Notes %in% Notes[str_detect(.$Notes, input$text)] | 
+         Name %in% Name[str_detect(.$Name, input$text)] | 
+         Team %in% Team[str_detect(.$Team, input$text)]) %>%
   mutate(Year = parse_integer(Year)) %>%
   filter(Rank <= 10) %>%
-  filter(Year >= input$slider1[1], Year <= input$slider1[2]) %>%
-  filter(Notes == str_subset(Notes, input$text))
+  filter(Year >= input$slider1[1], Year <= input$slider1[2])
 }) 
-
 
 ```
 
+
+
+###What does it take to win? 
+
+```{r}
+a <- tour_data %>%
+  mutate(Margin = str_remove(Margin, "\\+ ")) %>%
+  separate(Margin, into = c("mHour", "mMin", "mSec" ), sep = " ", fill = "left") %>%
+  mutate(mHour = parse_number(mHour),
+         mMin = parse_number(mMin)/60,
+         mSec = parse_number(mSec)/3600) %>%
+  mutate(Margin = rowSums(cbind(.$mHour, .$mMin, .$mSec) , na.rm = TRUE)) %>%
+  select(Year:`Time/Points`, Margin, `Stage wins`:`Stages in lead`)
+
+a %>% 
+  filter(Year >= 1913) %>%
+  filter(Margin !=0 ) %>%
+  ggplot(aes(x=parse_number(Year), y=Margin))+
+  geom_point()+
+  geom_smooth()
+
+a %>% 
+  filter(Year >= 1950) %>%
+  filter(Margin !=0 ) %>%
+  ggplot(aes(x=parse_number(Year), y=Margin))+
+  geom_point()+
+  geom_smooth()
+
+a %>%
+  filter(!is.na(`Stage wins`))%>%
+  ggplot()+
+  geom_bar(aes(x=`Stage wins`, stat = "count"))
+
+
+a %>%
+  filter(!is.na(`Stages in lead`)) %>%
+  ggplot()+
+  geom_bar(aes(x=parse_integer(`Stages in lead`)))
+```
 
 
