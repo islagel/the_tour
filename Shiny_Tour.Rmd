@@ -85,10 +85,18 @@ ggplot()+
 ```
 
 
+
+
+
+
 ##Medal Count and Country
 ```{r, echo = FALSE}
 inputPanel(
   selectInput("b", label = "Countries:", c(tour_data$Country), multiple = TRUE)
+)
+
+inputPanel(
+  checkboxInput("doped", label = "Exclude Doped Winners", FALSE)
 )
 
 
@@ -103,7 +111,11 @@ renderPlot({tour_data2 %>%
 })
 
 
-
+exclude_doped <- tour_data %>%
+  left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
+  filter(Status == "Never failed tests") %>%
+  group_by(Country) %>%
+  summarize(Count = n()) 
 
 
 ```
