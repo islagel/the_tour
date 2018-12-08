@@ -1,11 +1,9 @@
 ---
 title: "The Tour de France"
 runtime: shiny
-output: html_document
+output: flexdashboard::flex_dashboard
+vertical_layout: fill
 ---
-
-#{.tabset .tabset-fade .tabset-pills}
-
 
 
 ```{r setup, include=FALSE}
@@ -20,15 +18,20 @@ mergedtop_tens<- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/
 
 ```
 
+Countries of Winners 
+==========================
+    
+Column {.tabset}
+-------------------------------------
 
-
-##World Map 
+###Map {}
 
 ```{r , echo=FALSE}
 inputPanel(
   checkboxInput("doped", label = "Exclude Doped Winners", FALSE),
   checkboxInput("europe", label = "Just Europe", FALSE)
 )
+
 
 renderPlot({ 
 WorldData <- map_data('world')
@@ -46,6 +49,7 @@ a <-  if(input$doped){tour_data %>%
     tour_data %>%
   left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
   mutate(Country = ifelse(Country=="United States", "USA", Country))%>%
+  mutate(Country = ifelse(Country=="United Kingdom", "UK", Country))%>%
   mutate(Country = ifelse(Country=="United Kingdom", "UK", Country))%>%
   group_by(Country) %>%
   count()
@@ -80,20 +84,31 @@ ggplot()+
 })
 ```
 
+ 
 
-###Medal Count and Country
+### Medal Count and Country
 
 ```{r, echo = FALSE}
 inputPanel(
-  selectInput("b", label = "Countries:", c(tour_data$Country), multiple = TRUE)
+  selectInput("b", label = "Countries:", c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),
+  checkboxInput("doped2", label = "Exclude Doped Winners", FALSE)
 )
 
-
+renderPlot({
+if(input$doped2){
+  tour_data2 <- tour_data %>%
+  left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
+  filter(Status == "Never failed tests") %>%
+  group_by(Country) %>%
+  summarize(Count = n())
+  }else {
 tour_data2 <- tour_data %>%
   group_by(Country) %>%
-  summarize(Count = n()) 
+  summarize(Count = n())}
+  
+  
 
-renderPlot({tour_data2 %>%
+tour_data2 %>%
     filter(Country %in% input$b) %>%
     ggplot(mapping = aes(x = Country, y = Count), color = "red") +
     geom_bar(stat = "identity")
@@ -107,8 +122,12 @@ renderPlot({tour_data2 %>%
 
 
 
-##Doping in the Top Ten
-###Categories of Doping in the Top Ten Finishers: 1998-2015
+Doping in Top Finishers
+===========================
+
+
+Inputs {.sidebar}
+-------------------------------------
 
 ```{r, echo = FALSE}
 inputPanel(checkboxGroupInput("x", label = "Fill variable:",
@@ -121,6 +140,16 @@ inputPanel(checkboxGroupInput("x", label = "Fill variable:",
     selected = "Stripped of title in the current race due to doping.")
 )
 
+```
+
+
+
+Column 1
+-------------------------------------
+Categories of Doping in the Top Ten Finishers: 1998-2015
+
+
+```{r, echo = FALSE}
 renderPlot({
   mergedtop_tens %>%
     filter(Notes2 %in% input$x,
@@ -142,8 +171,8 @@ renderPlot({
 
 
 
-##Interactive Table
-
+Interactive Table
+=======================
 ```{r, echo = FALSE}
 inputPanel(
   sliderInput("slider1", label = h3("Year"), min = 1998, 
@@ -167,9 +196,9 @@ top_tens %>%
 
 
 
-##What does it take to win? 
-
-```{r, echo=FALSE}
+What does it take to win? 
+=========================
+```{r, include=FALSE}
 a <- tour_data %>%
   mutate(Margin = str_remove(Margin, "\\+ ")) %>%
   separate(Margin, into = c("mHour", "mMin", "mSec" ), sep = " ", fill = "left") %>%
@@ -182,16 +211,25 @@ a <- tour_data %>%
   select(Year:`Time/Points`, Margin, `Stage wins`:`Stages in lead`)
 ```
 
+Inputs {.sidebar}
+-------------------------------------
+
+
 ```{r, echo=FALSE}
 inputPanel(
-  selectInput("select", label = h3("Select box"), 
+  selectInput("select", label = h3("Comparison"), 
     choices = list("Margin of Win" = 1, "Stage Wins" = 2, "Stages in Lead" = 3), 
     selected = 1), 
   sliderInput("slider2", label = h3("Year"), min = 1900, 
         max = 2015, value = c(1900, 2015), sep = "")
 )
+```
+
+Column
+-------------------------------------
 
 
+```{r, echo=FALSE}
 renderPlotly(
 if(input$select == 1) {
   a %>% 
