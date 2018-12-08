@@ -2,7 +2,7 @@
 title: "The Tour de France"
 runtime: shiny
 output: flexdashboard::flex_dashboard
-vertical_layout: fill
+
 ---
 
 
@@ -21,16 +21,33 @@ mergedtop_tens<- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/
 Countries of Winners 
 ==========================
     
-Column {.tabset}
--------------------------------------
+Row {data-width=200}
+-------------------------
 
-###Map {}
-
+###Map Inputs
 ```{r , echo=FALSE}
 inputPanel(
   checkboxInput("doped", label = "Exclude Doped Winners", FALSE),
   checkboxInput("europe", label = "Just Europe", FALSE)
 )
+```
+
+###Barplot Inputs
+```{r , echo=FALSE}
+inputPanel(
+  selectInput("b", label = "Countries:", c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),
+  checkboxInput("doped2", label = "Exclude Doped Winners", FALSE)
+)
+```
+
+
+
+Row 
+-------------------
+
+### Map
+    
+```{r , echo=FALSE}
 
 
 renderPlot({ 
@@ -84,15 +101,11 @@ ggplot()+
 })
 ```
 
- 
 
-### Medal Count and Country
 
+
+### Barplot
 ```{r, echo = FALSE}
-inputPanel(
-  selectInput("b", label = "Countries:", c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),
-  checkboxInput("doped2", label = "Exclude Doped Winners", FALSE)
-)
 
 renderPlot({
 if(input$doped2){
@@ -114,11 +127,9 @@ tour_data2 %>%
     geom_bar(stat = "identity")
 })
 
-
-
-
-
 ```
+
+
 
 
 
