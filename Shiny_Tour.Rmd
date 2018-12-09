@@ -1,0 +1,291 @@
+---
+title: 'The Tour de France'
+runtime: shiny
+output: 
+  flexdashboard::flex_dashboard:
+    source_code: "https://github.com/islagel/the_tour"
+    theme: bootstrap
+    logo: logo.png
+---
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(maps)
+library(plotly)
+knitr::opts_chunk$set(echo = TRUE)
+top_tens <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/top_tens.rds"))
+doping_tibble <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/doping_tibble.rds"))
+tour_data <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/tour_data.rds"))
+mergedtop_tens<- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/mergedtop_tens.rds"))
+
+```
+
+About
+==========================
+
+
+Countries of Winners (Map)
+==========================
+    
+Inputs {.sidebar}
+-------------------------
+
+###Map Inputs
+```{r , echo=FALSE}
+inputPanel(
+  checkboxInput("doped", label = "Exclude Doped Winners", FALSE),
+  checkboxInput("europe", label = "Just Europe", FALSE)
+)
+```
+
+
+
+
+Column 
+-------------------------
+
+###Map
+    
+```{r , echo=FALSE}
+
+
+renderPlot({ 
+WorldData <- map_data('world')
+WorldData %>% filter(region != "Antarctica") -> WorldData
+WorldData <- fortify(WorldData)
+
+a <-  if(input$doped){tour_data %>%
+  left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
+  filter(Status == "Never failed tests") %>%
+  mutate(Country = ifelse(Country=="United States", "USA", Country))%>%
+  mutate(Country = ifelse(Country=="United Kingdom", "UK", Country))%>%
+  group_by(Country) %>%
+  count()
+  } else{
+    tour_data %>%
+  left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
+  mutate(Country = ifelse(Country=="United States", "USA", Country))%>%
+  mutate(Country = ifelse(Country=="United Kingdom", "UK", Country))%>%
+  mutate(Country = ifelse(Country=="United Kingdom", "UK", Country))%>%
+  group_by(Country) %>%
+  count()
+  } 
+
+if(input$europe){
+ggplot()+
+  geom_map(data=WorldData, map=WorldData,
+                  aes(x=long, y=lat, group=group, map_id=region),
+                  fill="white", colour="#7f7f7f", size=0.5)+
+  geom_map(data=a, map=WorldData,
+                  aes(fill=n, map_id=Country),
+                  colour="#7f7f7f", size=0.5)+
+  theme_void()+
+  scale_fill_continuous(low="thistle2", high="darkred", 
+                               guide="colorbar")+
+  labs(fill="legend", title="", x="", y="")+
+    coord_map(xlim = c(-10,20), ylim = c(35, 63))
+} else {
+  ggplot()+
+  geom_map(data=WorldData, map=WorldData,
+                  aes(x=long, y=lat, group=group, map_id=region),
+                  fill="white", colour="#7f7f7f", size=0.5)+
+  geom_map(data=a, map=WorldData,
+                  aes(fill=n, map_id=Country),
+                  colour="#7f7f7f", size=0.5)+
+  theme_void()+
+  scale_fill_continuous(low="thistle2", high="darkred", 
+                               guide="colorbar")+
+  labs(fill="legend", title="", x="", y="")+
+    coord_map(xlim=c(-180,180))
+}
+})
+```
+
+
+
+
+
+
+Countries of Winners (Barplot)
+==========================
+
+Inputs {.sidebar}
+-------------------------
+###Barplot Inputs
+```{r , echo=FALSE}
+inputPanel(
+  selectInput("b", label = "Countries:", c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),
+  checkboxInput("doped2", label = "Exclude Doped Winners", FALSE)
+)
+```
+
+Column 
+-------------------------
+### Barplot
+
+```{r, echo = FALSE}
+
+renderPlot({
+if(input$doped2){
+  tour_data2 <- tour_data %>%
+  left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
+  filter(Status == "Never failed tests") %>%
+  group_by(Country) %>%
+  summarize(Count = n())
+  }else {
+tour_data2 <- tour_data %>%
+  group_by(Country) %>%
+  summarize(Count = n())}
+  
+  
+
+tour_data2 %>%
+    filter(Country %in% input$b) %>%
+    ggplot(mapping = aes(x = Country, y = Count), color = "red") +
+    geom_bar(stat = "identity")
+})
+
+```
+
+
+Doping in Top Finishers
+===========================
+
+
+Inputs {.sidebar}
+-------------------------------------
+###Fill Variable
+```{r, echo = FALSE}
+inputPanel(checkboxGroupInput("x", label = NULL,
+    choices = c("Stripped" = "Stripped of title in the current race due to doping.",
+                "Failed Tests at Some Point" = "Failed tests for doping in another competition or out of competition at some point in their career.",
+                "Sanctioned for Doping, No Failed Tests" = "Sanctioned for doping without failed tests at some point in their career.",
+                "Admitted, No Failed Tests" = "Admitted to doping without failed tests or sanction for the current race.",
+                "Accused, No Failed Tests" = "Accused of doping without failed tests, sanction or admittance in their career.",
+                "Clean" = "Has never been: stripped of a title, failed tests or sanctioned for doping to date, with no known accusations."), 
+    selected = "Stripped of title in the current race due to doping.")
+)
+
+```
+
+
+
+Column 1
+-------------------------------------
+Categories of Doping in the Top Ten Finishers: 1998-2015
+
+
+```{r, echo = FALSE}
+renderPlot({
+  mergedtop_tens %>%
+    filter(Notes2 %in% input$x,
+           Rank != 11) %>%
+    ggplot() + 
+      geom_bar(mapping = aes(x = Year, fill = Notes2), 
+               position = "stack", stat = "count")+
+    scale_y_continuous(breaks=seq(0,10,1)) +
+    coord_cartesian(ylim= c(0,10),
+                    xlim = c(1998,2015)) +
+    theme_bw() +
+    scale_fill_brewer(palette="Set2") +
+    labs(fill = "Status") +
+    theme(legend.box.background = element_rect(colour = "black"))
+})
+            
+    
+```
+
+
+
+Interactive Table
+=======================
+```{r, echo = FALSE}
+inputPanel(
+  sliderInput("slider1", label = h3("Year"), min = 1998, 
+        max = 2015, value = c(1998, 2015), sep = ""),
+  textInput("text", label = h3("Key Words"), value = NULL , placeholder = "Eg. EPO")
+)
+
+renderTable({ 
+top_tens %>% 
+  mutate(Time = str_replace(Time, "^[^\\+](.*)", "Winner"))%>%
+  mutate(Notes = ifelse(is.na(.$Notes)," ", .$Notes))%>%
+  filter(Notes %in% Notes[str_detect(.$Notes, input$text)] | 
+         Name %in% Name[str_detect(.$Name, input$text)] | 
+         Team %in% Team[str_detect(.$Team, input$text)]) %>%
+  mutate(Year = parse_integer(Year)) %>%
+  filter(Rank <= 10) %>%
+  filter(Year >= input$slider1[1], Year <= input$slider1[2])
+}) 
+
+```
+
+
+
+What does it take to win? 
+=========================
+```{r, include=FALSE}
+a <- tour_data %>%
+  mutate(Margin = str_remove(Margin, "\\+ ")) %>%
+  separate(Margin, into = c("mHour", "mMin", "mSec" ), sep = " ", fill = "left") %>%
+  mutate(mHour = parse_number(mHour),
+         mMin = parse_number(mMin)/60,
+         mSec = parse_number(mSec)/3600) %>%
+  mutate(Margin = rowSums(cbind(.$mHour, .$mMin, .$mSec) , na.rm = TRUE)) %>%
+  mutate(Year = parse_number(Year))%>%
+  mutate(Margin = Margin*60)%>%
+  select(Year:`Time/Points`, Margin, `Stage wins`:`Stages in lead`)
+```
+
+Inputs {.sidebar}
+-------------------------------------
+
+
+```{r, echo=FALSE}
+inputPanel(
+  selectInput("select", label = h3("Comparison"), 
+    choices = list("Margin of Win" = 1, "Stage Wins" = 2, "Stages in Lead" = 3), 
+    selected = 1), 
+  sliderInput("slider2", label = h3("Year"), min = 1900, 
+        max = 2015, value = c(1900, 2015), sep = "")
+)
+```
+
+Column
+-------------------------------------
+
+
+```{r, echo=FALSE}
+renderPlotly(
+if(input$select == 1) {
+  a %>% 
+  filter(Year < 1905 | Year >1914) %>%
+  filter(Year >= input$slider2[1], Year <= input$slider2[2]) %>%
+  filter(Margin !=0 ) %>%
+  ggplot(aes(x=Year, y=Margin))+
+  geom_point()+
+  geom_smooth()+
+  geom_text(x = 1910, y = 70, label = "Data not reliable / WWI", size = 1.9) +
+  geom_text(x = 1943, y = 20, label = "WWII", size = 1.9) 
+}else if(input$select == 2){
+a %>% 
+  filter(Year >= input$slider2[1], Year <= input$slider2[2]) %>%
+  filter(!is.na(`Stage wins`))%>%
+  ggplot()+
+  geom_bar(aes(x=`Stage wins`))+
+  xlim(0,8)
+}else if(input$select == 3){
+a %>%
+  filter(Year >= input$slider2[1], Year <= input$slider2[2]) %>%
+  filter(!is.na(`Stages in lead`)) %>%
+  ggplot()+
+  geom_bar(aes(x=parse_integer(`Stages in lead`)))+
+  labs(x = "Stages in the Lead")+
+  xlim(0,22)
+})
+
+
+```
+
+
