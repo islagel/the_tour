@@ -1,0 +1,12 @@
+name: TourDeFrance
+title: TourDeFrance
+username:
+account: slagel1
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 610030
+bundleId: 1750291
+url: https://slagel1.shinyapps.io/TourDeFrance/
+when: 1544322765.07637
+asMultiple: FALSE
+asStatic: FALSE

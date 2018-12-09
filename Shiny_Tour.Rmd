@@ -6,6 +6,7 @@ output:
     source_code: "https://github.com/islagel/the_tour"
     theme: bootstrap
     logo: logo.png
+    
 ---
 
 
@@ -13,29 +14,27 @@ output:
 library(tidyverse)
 library(maps)
 library(plotly)
-knitr::opts_chunk$set(echo = TRUE)
-top_tens <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/top_tens.rds"))
-doping_tibble <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/doping_tibble.rds"))
-tour_data <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/tour_data.rds"))
-mergedtop_tens<- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/mergedtop_tens.rds"))
+options(shiny.sanitize.errors = FALSE)
+top_tens <- as.tibble(readRDS("top_tens.rds"))
+doping_tibble <- as.tibble(readRDS("doping_tibble.rds"))
+tour_data <- as.tibble(readRDS("tour_data.rds"))
+mergedtop_tens<- as.tibble(readRDS("mergedtop_tens.rds"))
 
 ```
 
 About
 ==========================
-
+Mucho informacion 
 
 Countries of Winners (Map)
 ==========================
     
 Inputs {.sidebar}
 -------------------------
-
-###Map Inputs
 ```{r , echo=FALSE}
 inputPanel(
-  checkboxInput("doped", label = "Exclude Doped Winners", FALSE),
-  checkboxInput("europe", label = "Just Europe", FALSE)
+  checkboxInput("doped", label = h6("Exclude Doped Winners"), FALSE),
+  checkboxInput("europe", label = h6("Just Europe"), FALSE)
 )
 ```
 
@@ -112,11 +111,11 @@ Countries of Winners (Barplot)
 
 Inputs {.sidebar}
 -------------------------
-###Barplot Inputs
+
 ```{r , echo=FALSE}
 inputPanel(
-  selectInput("b", label = "Countries:", c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),
-  checkboxInput("doped2", label = "Exclude Doped Winners", FALSE)
+  selectInput("b", label = h6("Countries:"), c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),
+  checkboxInput("doped2", label = h6("Exclude Doped Winners"), FALSE)
 )
 ```
 
@@ -155,9 +154,9 @@ Doping in Top Finishers
 
 Inputs {.sidebar}
 -------------------------------------
-###Fill Variable
+
 ```{r, echo = FALSE}
-inputPanel(checkboxGroupInput("x", label = NULL,
+inputPanel(checkboxGroupInput("x", label = h3("Fill Variable"),
     choices = c("Stripped" = "Stripped of title in the current race due to doping.",
                 "Failed Tests at Some Point" = "Failed tests for doping in another competition or out of competition at some point in their career.",
                 "Sanctioned for Doping, No Failed Tests" = "Sanctioned for doping without failed tests at some point in their career.",
