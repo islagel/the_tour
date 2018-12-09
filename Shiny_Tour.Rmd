@@ -1,8 +1,11 @@
 ---
-title: "The Tour de France"
+title: 'The Tour de France'
 runtime: shiny
-output: flexdashboard::flex_dashboard
-
+output: 
+  flexdashboard::flex_dashboard:
+    source_code: "https://github.com/islagel/the_tour"
+    theme: bootstrap
+    logo: logo.png
 ---
 
 
@@ -18,10 +21,14 @@ mergedtop_tens<- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/
 
 ```
 
-Countries of Winners 
+About
+==========================
+
+
+Countries of Winners (Map)
 ==========================
     
-Row {data-width=200}
+Inputs {.sidebar}
 -------------------------
 
 ###Map Inputs
@@ -32,20 +39,13 @@ inputPanel(
 )
 ```
 
-###Barplot Inputs
-```{r , echo=FALSE}
-inputPanel(
-  selectInput("b", label = "Countries:", c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),
-  checkboxInput("doped2", label = "Exclude Doped Winners", FALSE)
-)
-```
 
 
 
-Row 
--------------------
+Column 
+-------------------------
 
-### Map
+###Map
     
 ```{r , echo=FALSE}
 
@@ -83,8 +83,8 @@ ggplot()+
   theme_void()+
   scale_fill_continuous(low="thistle2", high="darkred", 
                                guide="colorbar")+
-  labs(fill="legend", title="Number of Winners by Country", x="", y="")+
-    lims(x = c(-10, 20), y = c(35, 58))
+  labs(fill="legend", title="", x="", y="")+
+    coord_map(xlim = c(-10,20), ylim = c(35, 63))
 } else {
   ggplot()+
   geom_map(data=WorldData, map=WorldData,
@@ -96,7 +96,8 @@ ggplot()+
   theme_void()+
   scale_fill_continuous(low="thistle2", high="darkred", 
                                guide="colorbar")+
-  labs(fill="legend", title="Number of Winners by Country", x="", y="")
+  labs(fill="legend", title="", x="", y="")+
+    coord_map(xlim=c(-180,180))
 }
 })
 ```
@@ -104,7 +105,25 @@ ggplot()+
 
 
 
+
+
+Countries of Winners (Barplot)
+==========================
+
+Inputs {.sidebar}
+-------------------------
+###Barplot Inputs
+```{r , echo=FALSE}
+inputPanel(
+  selectInput("b", label = "Countries:", c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),
+  checkboxInput("doped2", label = "Exclude Doped Winners", FALSE)
+)
+```
+
+Column 
+-------------------------
 ### Barplot
+
 ```{r, echo = FALSE}
 
 renderPlot({
@@ -130,18 +149,15 @@ tour_data2 %>%
 ```
 
 
-
-
-
 Doping in Top Finishers
 ===========================
 
 
 Inputs {.sidebar}
 -------------------------------------
-
+###Fill Variable
 ```{r, echo = FALSE}
-inputPanel(checkboxGroupInput("x", label = "Fill variable:",
+inputPanel(checkboxGroupInput("x", label = NULL,
     choices = c("Stripped" = "Stripped of title in the current race due to doping.",
                 "Failed Tests at Some Point" = "Failed tests for doping in another competition or out of competition at some point in their career.",
                 "Sanctioned for Doping, No Failed Tests" = "Sanctioned for doping without failed tests at some point in their career.",
@@ -257,14 +273,16 @@ a %>%
   filter(Year >= input$slider2[1], Year <= input$slider2[2]) %>%
   filter(!is.na(`Stage wins`))%>%
   ggplot()+
-  geom_bar(aes(x=`Stage wins`))
-}else if(input$select == 2){
+  geom_bar(aes(x=`Stage wins`))+
+  xlim(0,8)
+}else if(input$select == 3){
 a %>%
   filter(Year >= input$slider2[1], Year <= input$slider2[2]) %>%
   filter(!is.na(`Stages in lead`)) %>%
   ggplot()+
   geom_bar(aes(x=parse_integer(`Stages in lead`)))+
-  labs(x = "Stages in the Lead")
+  labs(x = "Stages in the Lead")+
+  xlim(0,22)
 })
 
 
