@@ -6,15 +6,16 @@ output:
     source_code: "https://github.com/islagel/the_tour"
     theme: bootstrap
     logo: logo.png
-    
 ---
 
 
 ```{r setup, include=FALSE}
+library(shiny)
+library(flexdashboard)
 library(tidyverse)
-library(maps)
+library(devtools)
 library(plotly)
-options(shiny.sanitize.errors = FALSE)
+
 top_tens <- as.tibble(readRDS("top_tens.rds"))
 doping_tibble <- as.tibble(readRDS("doping_tibble.rds"))
 tour_data <- as.tibble(readRDS("tour_data.rds"))
@@ -47,7 +48,6 @@ Column
 ###Map
     
 ```{r , echo=FALSE}
-
 
 renderPlot({ 
 WorldData <- map_data('world')
