@@ -26,7 +26,11 @@ mergedtop_tens<- as.tibble(readRDS("mergedtop_tens.rds"))
 
 About
 ==========================
-Mucho informacion 
+Authors: 
+Lisa Fisher and Isaac Slagel
+
+To create this page we scraped data on the Tour de France from the sources listed below. Using R we tidied this data and created a Shiny app which allows the user to interact with our data. 
+
 
 Countries of Winners (Map)
 ==========================
@@ -105,8 +109,8 @@ ggplot()+
 ```
 
 ### Description
-This map provides a visual depiction of 
 
+This map provides a visual depiction of where the winners of the Tour de France are from. We found that a zoomed perspective on Europe is helpful as many of the winners hail from countries here. Additionally we created a feature to allow the user to show the world map when known dopers are excluded.  
 
 Countries of Winners (Barplot)
 ==========================
@@ -151,7 +155,7 @@ tour_data2 %>%
 ```
 
 ### Description
-This map provides a visual depiction of 
+This barplot provides another visualization of the number of winners any given country has had in the Tour de France. This plot also allows the exclsuion of known dopers. 
 
 Doping in Top Finishers
 ===========================
@@ -215,7 +219,7 @@ renderPlot({
 ```
 
 ### Description
-This map provides a visual depiction of 
+This interactive barplot provides examples of the doping status of top finishers of the Tour de France between 1998-2015. 
 
 Interactive Table
 =======================
@@ -309,4 +313,4 @@ a %>%
 ```
 
 ### Description
-This map provides a visual depiction of 
+These charts provide a few metrics to be compared between winners of the Tour de France.
