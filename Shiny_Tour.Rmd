@@ -140,6 +140,7 @@ tour_data2 <- tour_data %>%
   summarize(Count = n())}
 
 
+  
 
 tour_data2 %>%
     filter(Country %in% input$b) %>%
