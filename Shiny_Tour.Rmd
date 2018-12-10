@@ -144,9 +144,11 @@ Column
 renderPlot({
 
 
+
 tour_data2 <- tour_data %>%
   left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
     filter(Country %in% input$b)
+
 
 if(input$doped2){
 tour_data2 %>%
