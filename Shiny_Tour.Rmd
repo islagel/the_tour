@@ -276,6 +276,7 @@ if(input$select == 1) {
 a %>% 
   filter(Year >= input$slider2[1], Year <= input$slider2[2]) %>%
   filter(!is.na(`Stage wins`))%>%
+  mutate(`Stage wins`=parse_integer(`Stage wins`))%>%
   ggplot()+
   geom_bar(aes(x=`Stage wins`))+
   xlim(0,8)
