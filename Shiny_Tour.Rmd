@@ -1,36 +1,51 @@
 ---
-title: "The Tour de France"
+title: 'The Tour de France'
 runtime: shiny
-output: flexdashboard::flex_dashboard
-vertical_layout: fill
+output: 
+  flexdashboard::flex_dashboard:
+    source_code: "https://github.com/islagel/the_tour"
+    theme: bootstrap
+    logo: logo.png
+    
 ---
-
 
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(maps)
 library(plotly)
-knitr::opts_chunk$set(echo = TRUE)
-top_tens <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/top_tens.rds"))
-doping_tibble <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/doping_tibble.rds"))
-tour_data <- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/tour_data.rds"))
-mergedtop_tens<- as.tibble(readRDS("~/Mscs 264 F18/Submit Section B/TourProject/mergedtop_tens.rds"))
+options(shiny.sanitize.errors = FALSE)
+top_tens <- as.tibble(readRDS("top_tens.rds"))
+doping_tibble <- as.tibble(readRDS("doping_tibble.rds"))
+tour_data <- as.tibble(readRDS("tour_data.rds"))
+mergedtop_tens<- as.tibble(readRDS("mergedtop_tens.rds"))
 
 ```
 
-Countries of Winners 
+About
+==========================
+Mucho informacion 
+
+Countries of Winners (Map)
 ==========================
     
-Column {.tabset}
--------------------------------------
-
-###Map {}
-
+Inputs {.sidebar}
+-------------------------
 ```{r , echo=FALSE}
 inputPanel(
-  checkboxInput("doped", label = "Exclude Doped Winners", FALSE),
-  checkboxInput("europe", label = "Just Europe", FALSE)
+  checkboxInput("doped", label = h6("Exclude Doped Winners"), FALSE),
+  checkboxInput("europe", label = h6("Just Europe"), FALSE)
 )
+```
+
+
+
+
+Column 
+-------------------------
+
+###Map
+    
+```{r , echo=FALSE}
 
 
 renderPlot({ 
@@ -66,8 +81,8 @@ ggplot()+
   theme_void()+
   scale_fill_continuous(low="thistle2", high="darkred", 
                                guide="colorbar")+
-  labs(fill="legend", title="Number of Winners by Country", x="", y="")+
-    lims(x = c(-10, 20), y = c(35, 58))
+  labs(fill="legend", title="", x="", y="")+
+    coord_map(xlim = c(-10,20), ylim = c(35, 63))
 } else {
   ggplot()+
   geom_map(data=WorldData, map=WorldData,
@@ -79,14 +94,12 @@ ggplot()+
   theme_void()+
   scale_fill_continuous(low="thistle2", high="darkred", 
                                guide="colorbar")+
-  labs(fill="legend", title="Number of Winners by Country", x="", y="")
+  labs(fill="legend", title="", x="", y="")+
+    coord_map(xlim=c(-180,180))
 }
 })
 ```
 
- 
-
-### Medal Count and Country
 
 
 
@@ -100,7 +113,26 @@ ggplot()+
 inputPanel(
   selectInput("b", label = "Countries:", c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE),
   checkboxInput("doped2", label = "Exclude Doped Winners", FALSE)
+=======
+```
+
+
+Countries of Winners (Barplot)
+==========================
+
+Inputs {.sidebar}
+-------------------------
+
+```{r , echo=FALSE}
+inputPanel(selectInput("b", label = h6("Countries:"), c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),checkboxInput("doped2", label = h6("Exclude Doped Winners"), FALSE)
 )
+```
+
+Column 
+-------------------------
+### Barplot
+
+```{r, echo = FALSE}
 
 
 
@@ -123,6 +155,7 @@ tour_data2 %>%
     geom_bar(stat = "identity")
 })
 
+<<<<<<< HEAD
 
 exclude_doped <- tour_data %>%
   left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
@@ -131,8 +164,9 @@ exclude_doped <- tour_data %>%
   summarize(Count = n()) 
 
 
+=======
+>>>>>>> 291b6dd4a223cbcd11a83f42bfed412f0770cc3b
 ```
-
 
 
 Doping in Top Finishers
@@ -143,7 +177,7 @@ Inputs {.sidebar}
 -------------------------------------
 
 ```{r, echo = FALSE}
-inputPanel(checkboxGroupInput("x", label = "Fill variable:",
+inputPanel(checkboxGroupInput("x", label = h3("Fill Variable"),
     choices = c("Stripped" = "Stripped of title in the current race due to doping.",
                 "Failed Tests at Some Point" = "Failed tests for doping in another competition or out of competition at some point in their career.",
                 "Sanctioned for Doping, No Failed Tests" = "Sanctioned for doping without failed tests at some point in their career.",
@@ -259,14 +293,16 @@ a %>%
   filter(Year >= input$slider2[1], Year <= input$slider2[2]) %>%
   filter(!is.na(`Stage wins`))%>%
   ggplot()+
-  geom_bar(aes(x=`Stage wins`))
-}else if(input$select == 2){
+  geom_bar(aes(x=`Stage wins`))+
+  xlim(0,8)
+}else if(input$select == 3){
 a %>%
   filter(Year >= input$slider2[1], Year <= input$slider2[2]) %>%
   filter(!is.na(`Stages in lead`)) %>%
   ggplot()+
   geom_bar(aes(x=parse_integer(`Stages in lead`)))+
-  labs(x = "Stages in the Lead")
+  labs(x = "Stages in the Lead")+
+  xlim(0,22)
 })
 
 
