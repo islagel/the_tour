@@ -57,7 +57,7 @@ WorldData <- fortify(WorldData)
 
 a <-  if(input$doped){tour_data %>%
   left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
-  filter(Status == "Never failed tests") %>%
+  filter(Status == "Never failed tests" | is.na(Status)) %>%
   mutate(Country = ifelse(Country=="United States", "USA", Country))%>%
   mutate(Country = ifelse(Country=="United Kingdom", "UK", Country))%>%
   group_by(Country) %>%
