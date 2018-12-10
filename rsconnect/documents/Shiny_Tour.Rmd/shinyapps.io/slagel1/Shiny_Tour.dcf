@@ -1,0 +1,12 @@
+name: Shiny_Tour
+title: Shiny_Tour
+username:
+account: slagel1
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 610014
+bundleId: 1750280
+url: https://slagel1.shinyapps.io/Shiny_Tour/
+when: 1544321942.74503
+asMultiple: FALSE
+asStatic: FALSE
