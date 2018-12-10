@@ -1,11 +1,12 @@
 ---
-title: 'The Tour de France'
+title: ''
 runtime: shiny
 output: 
   flexdashboard::flex_dashboard:
     source_code: "https://github.com/islagel/the_tour"
     theme: bootstrap
     logo: logo.png
+    vertical_layout: scroll
 ---
 
 ```{r setup, include=FALSE}
@@ -21,6 +22,7 @@ tour_data <- as.tibble(readRDS("tour_data.rds"))
 mergedtop_tens<- as.tibble(readRDS("mergedtop_tens.rds"))
 
 ```
+
 
 About
 ==========================
@@ -43,7 +45,7 @@ inputPanel(
 
 
 
-Column 
+Row 
 -------------------------
 
 ###Map
@@ -57,7 +59,7 @@ WorldData <- fortify(WorldData)
 
 a <-  if(input$doped){tour_data %>%
   left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
-  filter(Status == "Never failed tests") %>%
+  filter(Status == "Never failed tests" | is.na(Status)) %>%
   mutate(Country = ifelse(Country=="United States", "USA", Country))%>%
   mutate(Country = ifelse(Country=="United Kingdom", "UK", Country))%>%
   group_by(Country) %>%
@@ -102,9 +104,8 @@ ggplot()+
 })
 ```
 
-
-
-
+### Description
+This map provides a visual depiction of 
 
 
 Countries of Winners (Barplot)
@@ -148,6 +149,8 @@ tour_data2 %>%
 
 ```
 
+### Description
+This map provides a visual depiction of 
 
 Doping in Top Finishers
 ===========================
@@ -187,7 +190,7 @@ inputPanel(checkboxGroupInput("x", label = h3("Fill Variable"),
 
 Column 1
 -------------------------------------
-Categories of Doping in the Top Ten Finishers: 1998-2015
+###Categories of Doping in the Top Ten Finishers: 1998-2015
 
 
 ```{r, echo = FALSE}
@@ -210,7 +213,8 @@ renderPlot({
 
 ```
 
-
+### Description
+This map provides a visual depiction of 
 
 Interactive Table
 =======================
@@ -286,6 +290,7 @@ if(input$select == 1) {
 a %>% 
   filter(Year >= input$slider2[1], Year <= input$slider2[2]) %>%
   filter(!is.na(`Stage wins`))%>%
+  mutate(`Stage wins`=parse_integer(`Stage wins`))%>%
   ggplot()+
   geom_bar(aes(x=`Stage wins`))+
   xlim(0,8)
@@ -301,3 +306,6 @@ a %>%
 
 
 ```
+
+### Description
+This map provides a visual depiction of 
