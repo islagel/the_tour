@@ -5,8 +5,8 @@ account: slagel1
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 610030
-bundleId: 1750291
+bundleId: 1750459
 url: https://slagel1.shinyapps.io/TourDeFrance/
-when: 1544322765.07637
+when: 1544338755.36178
 asMultiple: FALSE
 asStatic: FALSE

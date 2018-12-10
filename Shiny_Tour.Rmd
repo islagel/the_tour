@@ -115,7 +115,7 @@ Inputs {.sidebar}
 ```{r , echo=FALSE}
 inputPanel(
   selectInput("b", label = h6("Countries:"), c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),
-  checkboxInput("doped2", label = h6("Exclude Doped Winners"), FALSE)
+  checkboxInput("doped2", label = h6("Exclude Known Doped Winners"), FALSE)
 )
 ```
 
@@ -129,7 +129,7 @@ renderPlot({
 if(input$doped2){
   tour_data2 <- tour_data %>%
   left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
-  filter(Status == "Never failed tests") %>%
+  filter(Status == "Never failed tests" | is.na(Status)) %>%
   group_by(Country) %>%
   summarize(Count = n())
   }else {
