@@ -1,5 +1,5 @@
 ---
-title: ''
+title: ' '
 runtime: shiny
 output: 
   flexdashboard::flex_dashboard:
@@ -26,11 +26,21 @@ mergedtop_tens<- as.tibble(readRDS("mergedtop_tens.rds"))
 
 About
 ==========================
-Authors: 
+####Authors: 
 Lisa Fisher and Isaac Slagel
 
+####Methodology
 To create this page we scraped data on the Tour de France from the sources listed below. Using R we tidied this data and created a Shiny app which allows the user to interact with our data. 
 
+####Sources 
+- Tour De France Winners
+    - https://en.wikipedia.org/wiki/List_of_Tour_de_France_general_classification_winners
+
+- Tour De France Stage Wins per Rider
+    - https://en.wikipedia.org/wiki/Tour_de_France_records_and_statistics#Stage_wins_per_rider 
+
+- Athletes in the top 10 of any year after 1998 and whether they have been caught doping as well as a general summary table. 
+    - https://en.wikipedia.org/wiki/Doping_at_the_Tour_de_France
 
 Countries of Winners (Map)
 ==========================
@@ -121,7 +131,7 @@ Inputs {.sidebar}
 ```{r , echo=FALSE}
 inputPanel(
   selectInput("b", label = h6("Countries:"), c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),
-  checkboxInput("doped2", label = h6("Exclude Known Doped Winners"), FALSE)
+  checkboxInput("doped2", label = h6("Fill by Known Doping Status"), FALSE)
 )
 ```
 
@@ -132,29 +142,29 @@ Column
 ```{r, echo = FALSE}
 
 renderPlot({
-if(input$doped2){
-  tour_data2 <- tour_data %>%
-  left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
-  filter(Status == "Never failed tests" | is.na(Status)) %>%
-  group_by(Country) %>%
-  summarize(Count = n())
-  }else {
+
+
 tour_data2 <- tour_data %>%
-  group_by(Country) %>%
-  summarize(Count = n())}
+  left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
+    filter(Country %in% input$b)
 
-
-
+if(input$doped2){
 tour_data2 %>%
-    filter(Country %in% input$b) %>%
-    ggplot(mapping = aes(x = Country, y = Count), color = "red") +
-    geom_bar(stat = "identity")
+    mutate(Clean = ifelse(tour_data2$Status == "Never failed tests" | is.na(Status), "Not Proven Doped", "Doped")) %>%
+    ggplot(mapping = aes(x = Country, fill = Clean )) +
+    geom_bar(stat = "count")
+}else {
+tour_data2 %>%
+    mutate(Clean = ifelse(tour_data2$Status == "Never failed tests" | is.na(Status), "Not Proven Doped", "Doped")) %>%
+    ggplot(mapping = aes(x = Country)) +
+    geom_bar(stat = "count")
+}
 })
 
 ```
 
 ### Description
-This barplot provides another visualization of the number of winners any given country has had in the Tour de France. This plot also allows the exclsuion of known dopers. 
+This barplot provides another visualization of the number of winners any given country has had in the Tour de France. This plot also allows us to differentiate by doping status. 
 
 Doping in Top Finishers
 ===========================
