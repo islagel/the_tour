@@ -1,11 +1,12 @@
 ---
-title: 'The Tour de France'
+title: ''
 runtime: shiny
 output: 
   flexdashboard::flex_dashboard:
     source_code: "https://github.com/islagel/the_tour"
     theme: bootstrap
     logo: logo.png
+    vertical_layout: scroll
 ---
 
 ```{r setup, include=FALSE}
@@ -21,6 +22,7 @@ tour_data <- as.tibble(readRDS("tour_data.rds"))
 mergedtop_tens<- as.tibble(readRDS("mergedtop_tens.rds"))
 
 ```
+
 
 About
 ==========================
@@ -43,7 +45,7 @@ inputPanel(
 
 
 
-Column 
+Row 
 -------------------------
 
 ###Map
@@ -102,9 +104,8 @@ ggplot()+
 })
 ```
 
-
-
-
+### Description
+This map provides a visual depiction of 
 
 
 Countries of Winners (Barplot)
@@ -148,6 +149,8 @@ tour_data2 %>%
 
 ```
 
+### Description
+This map provides a visual depiction of 
 
 Doping in Top Finishers
 ===========================
@@ -173,7 +176,7 @@ inputPanel(checkboxGroupInput("x", label = h3("Fill Variable"),
 
 Column 1
 -------------------------------------
-Categories of Doping in the Top Ten Finishers: 1998-2015
+###Categories of Doping in the Top Ten Finishers: 1998-2015
 
 
 ```{r, echo = FALSE}
@@ -196,7 +199,8 @@ renderPlot({
 
 ```
 
-
+### Description
+This map provides a visual depiction of 
 
 Interactive Table
 =======================
@@ -287,3 +291,6 @@ a %>%
 
 
 ```
+
+### Description
+This map provides a visual depiction of 
