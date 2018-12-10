@@ -8,7 +8,6 @@ output:
     logo: logo.png
 ---
 
-
 ```{r setup, include=FALSE}
 library(shiny)
 library(flexdashboard)
@@ -29,7 +28,7 @@ Mucho informacion
 
 Countries of Winners (Map)
 ==========================
-    
+
 Inputs {.sidebar}
 -------------------------
 ```{r , echo=FALSE}
@@ -42,11 +41,13 @@ inputPanel(
 
 
 
+
+
 Column 
 -------------------------
 
 ###Map
-    
+
 ```{r , echo=FALSE}
 
 renderPlot({ 
@@ -136,8 +137,8 @@ if(input$doped2){
 tour_data2 <- tour_data %>%
   group_by(Country) %>%
   summarize(Count = n())}
-  
-  
+
+
 
 tour_data2 %>%
     filter(Country %in% input$b) %>%
@@ -191,8 +192,8 @@ renderPlot({
     labs(fill = "Status") +
     theme(legend.box.background = element_rect(colour = "black"))
 })
-            
-    
+
+
 ```
 
 
@@ -286,5 +287,3 @@ a %>%
 
 
 ```
-
-
