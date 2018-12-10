@@ -156,15 +156,29 @@ Doping in Top Finishers
 Inputs {.sidebar}
 -------------------------------------
 
+
+
+```{r}
+mergedtop_tens2 <- mergedtop_tens %>%
+  mutate(Notes2 = ifelse(Notes2 == "Admitted to doping without failed tests or sanction for the current race.", "Admitted, No Failed Tests", Notes2)) %>%
+  mutate(Notes2 = ifelse(Notes2 == "Accused of doping without failed tests, sanction or admittance in their career.", "Accused, No Failed Tests", Notes2)) %>%
+  mutate(Notes2 = ifelse(Notes2 == "Has never been: stripped of a title, failed tests or sanctioned for doping to date, with no known accusations.", "Clean", Notes2)) %>%
+  mutate(Notes2 = ifelse(Notes2 == "Stripped of title in the current race due to doping.", "Stripped of title", Notes2)) %>%
+  mutate(Notes2 = ifelse(Notes2 == "Failed tests for doping in another competition or out of competition at some point in their career.", "Failed Tests at Some Point", Notes2)) %>%
+  mutate(Notes2 = ifelse(Notes2 == "Sanctioned for doping without failed tests at some point in their career.", "Sanctioned for Doping, No Failed Tests", Notes2))
+```
+
+
+
 ```{r, echo = FALSE}
 inputPanel(checkboxGroupInput("x", label = h3("Fill Variable"),
-    choices = c("Stripped" = "Stripped of title in the current race due to doping.",
-                "Failed Tests at Some Point" = "Failed tests for doping in another competition or out of competition at some point in their career.",
-                "Sanctioned for Doping, No Failed Tests" = "Sanctioned for doping without failed tests at some point in their career.",
-                "Admitted, No Failed Tests" = "Admitted to doping without failed tests or sanction for the current race.",
-                "Accused, No Failed Tests" = "Accused of doping without failed tests, sanction or admittance in their career.",
-                "Clean" = "Has never been: stripped of a title, failed tests or sanctioned for doping to date, with no known accusations."), 
-    selected = "Stripped of title in the current race due to doping.")
+    choices = c("Stripped of title" = "Stripped of title",
+                "Failed Tests at Some Point" = "Failed Tests at Some Point",
+                "Sanctioned for Doping, No Failed Tests" = "Sanctioned for Doping, No Failed Tests",
+                "Admitted, No Failed Tests" = "Admitted, No Failed Tests",
+                "Accused, No Failed Tests" = "Accused, No Failed Tests",
+                "Clean" = "Clean"), 
+    selected = "Stripped of title")
 )
 
 ```
@@ -178,7 +192,7 @@ Categories of Doping in the Top Ten Finishers: 1998-2015
 
 ```{r, echo = FALSE}
 renderPlot({
-  mergedtop_tens %>%
+  mergedtop_tens2 %>%
     filter(Notes2 %in% input$x,
            Rank != 11) %>%
     ggplot() + 
