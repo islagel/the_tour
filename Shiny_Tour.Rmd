@@ -6,14 +6,15 @@ output:
     source_code: "https://github.com/islagel/the_tour"
     theme: bootstrap
     logo: logo.png
-    
 ---
 
 ```{r setup, include=FALSE}
+library(shiny)
+library(flexdashboard)
 library(tidyverse)
-library(maps)
+library(devtools)
 library(plotly)
-options(shiny.sanitize.errors = FALSE)
+
 top_tens <- as.tibble(readRDS("top_tens.rds"))
 doping_tibble <- as.tibble(readRDS("doping_tibble.rds"))
 tour_data <- as.tibble(readRDS("tour_data.rds"))
@@ -27,7 +28,7 @@ Mucho informacion
 
 Countries of Winners (Map)
 ==========================
-    
+
 Inputs {.sidebar}
 -------------------------
 ```{r , echo=FALSE}
@@ -44,9 +45,8 @@ Column
 -------------------------
 
 ###Map
-    
-```{r , echo=FALSE}
 
+```{r , echo=FALSE}
 
 renderPlot({ 
 WorldData <- map_data('world')
@@ -105,18 +105,6 @@ ggplot()+
 
 
 
-
-##Medal Count and Country
-=======
-
-```{r, echo = FALSE}
-inputPanel(
-  selectInput("b", label = "Countries:", c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE),
-  checkboxInput("doped2", label = "Exclude Doped Winners", FALSE)
-=======
-```
-
-
 Countries of Winners (Barplot)
 ==========================
 
@@ -124,7 +112,9 @@ Inputs {.sidebar}
 -------------------------
 
 ```{r , echo=FALSE}
-inputPanel(selectInput("b", label = h6("Countries:"), c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),checkboxInput("doped2", label = h6("Exclude Doped Winners"), FALSE)
+inputPanel(
+  selectInput("b", label = h6("Countries:"), c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),
+  checkboxInput("doped2", label = h6("Exclude Doped Winners"), FALSE)
 )
 ```
 
@@ -134,8 +124,6 @@ Column
 
 ```{r, echo = FALSE}
 
-
-
 renderPlot({
 if(input$doped2){
   tour_data2 <- tour_data %>%
@@ -143,11 +131,12 @@ if(input$doped2){
   filter(Status == "Never failed tests") %>%
   group_by(Country) %>%
   summarize(Count = n())
-  }else {tour_data2 <- tour_data %>%
+  }else {
+tour_data2 <- tour_data %>%
   group_by(Country) %>%
   summarize(Count = n())}
-  
-  
+
+
 
 tour_data2 %>%
     filter(Country %in% input$b) %>%
@@ -155,17 +144,6 @@ tour_data2 %>%
     geom_bar(stat = "identity")
 })
 
-<<<<<<< HEAD
-
-exclude_doped <- tour_data %>%
-  left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
-  filter(Status == "Never failed tests") %>%
-  group_by(Country) %>%
-  summarize(Count = n()) 
-
-
-=======
->>>>>>> 291b6dd4a223cbcd11a83f42bfed412f0770cc3b
 ```
 
 
@@ -212,8 +190,8 @@ renderPlot({
     labs(fill = "Status") +
     theme(legend.box.background = element_rect(colour = "black"))
 })
-            
-    
+
+
 ```
 
 
@@ -307,5 +285,3 @@ a %>%
 
 
 ```
-
-
