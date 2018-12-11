@@ -169,9 +169,11 @@ tour_data2 %>%
 ### Description
 This barplot provides another visualization of the number of winners any given country has had in the Tour de France. This plot also allows us to differentiate by doping status. 
 
-When looking comparing all countries who have had winners we see that France has had the greatest overall success, but they have also have the greatest number of doped athletes. 
+When looking comparing all countries who have had winners we see that France has had the greatest overall success, but they have also have the greatest number of doped athletes. Belgium follows France with the second largest number of wins, but also has had some doped athletes. Countries who have had winners who have doped include: France, Belgium, Spain, Italy, the U.S., and the Netherlands.
 
-For countries outside of Europe, the U.S. has had the most success but over half of their wins have been from doped riders (6 of which were Lance Armstrong).
+For countries outside of Europe, the U.S. has had the most success but over half of their wins have been from doped riders (6 of which were Lance Armstrong). Australia is the only other country outside of Europe that has had a cyclist win the Tour de France.
+
+It is important to note that a single athlete, doped or not doped, can win the Tour de France multiple years. This means that within a single country such as the U.S., only two riders, Greg Lemond and Lance Armstrong, have contributed to the 10 wins for the country. With Armstrong's doped status, the barplot shows 6 of the wins as doped wins and 4 as clean wins. Other countries also have cyclists, both doped and not doped, that have won more than one year of the Tour de France, and this should be considered in your analysis.
 
 Doping in Top Finishers
 ===========================
