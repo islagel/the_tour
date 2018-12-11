@@ -55,13 +55,8 @@ inputPanel(
 ```
 
 
-
-
-
-
-Row 
+Column 
 -------------------------
-
 ###Map
 
 ```{r , echo=FALSE}
