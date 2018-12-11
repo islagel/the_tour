@@ -289,13 +289,13 @@ inputPanel(
     choices = list("Margin of Win" = 1, "Stage Wins" = 2, "Stages in Lead" = 3), 
     selected = 1), 
   sliderInput("slider2", label = h3("Year"), min = 1900, 
-        max = 2015, value = c(1900, 2015), sep = "")
+        max = 2018, value = c(1900, 2018), sep = "")
 )
 ```
 
 Column
 -------------------------------------
-### 
+### Characteristic of Winners
 
 ```{r, echo=FALSE}
 renderPlotly(
@@ -332,3 +332,9 @@ a %>%
 
 ### Description
 These charts provide a few metrics to be compared between winners of the Tour de France.
+
+We see that overtime the margin for the winner has shrunk. The race has gotten tighter. However, we see that these decreases in margin mostly occurred between 1900 and 1960. Since 1960, the margin of the winner has stayed under 15 minutes. 
+
+The Tour de France is raced in many 1 day races or stages. Generally there are 21 stages but in older races this isn't always true. Interestingly enough, we see that the general classification winner (the rider with the lowest aggregate time) rarely wins more than 5 stages. The mode amount of stages won by the winner is 2. 
+
+Stages in the lead refers to how many days a rider was leading in aggregate time (aka the general classification leader). We see that it is much more common for riders to be in the lead for many of the stages. Amazingly enough we see that riders have managed to pull off the win with as few 1 stage led or as many as 21 stages led. That is quite the range!
