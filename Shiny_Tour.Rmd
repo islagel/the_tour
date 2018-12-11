@@ -199,6 +199,8 @@ For countries outside of Europe, the U.S. has had the most success but over half
 It is important to note that a single athlete, doped or not doped, can win the Tour de France multiple years. This means that within a single country such as the U.S., only two riders, Greg Lemond and Lance Armstrong, have contributed to the 10 wins for the country. With Armstrong's doped status, the barplot shows 6 of the wins as doped wins and 4 as clean wins. Other countries also have cyclists, both doped and not doped, that have won more than one year of the Tour de France, and this should be considered in your analysis.
 
 
+
+
 Doping in Top Finishers
 ===========================
 
@@ -262,6 +264,24 @@ renderPlot({
 
 ### Description
 This interactive barplot provides examples of the doping status of top finishers of the Tour de France between 1998-2015. 
+
+
+In the years 1999-2010, at least one cyclist was stripped of their title within the top 10 finishers every year. 2005 was the year with the greatest number of riders in the top 10 stripped of their title, with three riders.
+
+In all the years from 1998-2015, with the exception of 2012 and 2014, at least one athlete in the top 10 had failed doping tests at some point in their career, but not that particular race. In 2003, there were five riders in the top 10 who had failed drug tests at some point in their career.
+
+Throughout the years, many athletes have also been sanctioned for doping without having failed tests or have admitted to doping without having failed tests. When looking at the number of clean riders in the top 10 each year, years 2011 to 2015 have had at least six or more riders who have not been proven to have doped for that particular race or in their career. 
+
+The categories of doping include:
+
+1. Stripped of Title, in which an athlete loses their title in the top 10 of the Tour de France due to their doped status.
+2. Failed Tests at Some Point, in which an athlete failed tests for doping in another competition or out of competition at some point in their career.
+3. Sanctioned for Doping, No Failed Tests, in which an athlete is sanctioned for doping without failed tests at some point in their career.
+4. Admitted, No Failed Tests, in which an athlete admitted to doping without failed tests or sanction for the current race.
+5. Accused, No Failed Tests, in which an athlete has been accused of doping without failed tests, sanction or admittance in their career.
+6. Clean, in which an athlete has never been: stripped of a title, failed tests or sanctioned for doping to date, with no known accusations.
+
+
 
 Interactive Table
 =======================
