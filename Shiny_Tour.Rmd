@@ -13,7 +13,6 @@ output:
 library(shiny)
 library(flexdashboard)
 library(tidyverse)
-library(devtools)
 library(plotly)
 
 top_tens <- as.tibble(readRDS("top_tens.rds"))
@@ -26,21 +25,41 @@ mergedtop_tens<- as.tibble(readRDS("mergedtop_tens.rds"))
 
 About
 ==========================
+Column 
+-------------------------
+
 ####Authors: 
-Lisa Fisher and Isaac Slagel
+  Lisa Fisher and Isaac Slagel
 
 ####Methodology
-To create this page we scraped data on the Tour de France from the sources listed below. Using R we tidied this data and created a Shiny app which allows the user to interact with our data. 
+  To create this page we scraped data on the Tour de France from the sources listed below. Using R we tidied this data and created a Shiny app which allows the user to interact with our data. If your interested in what is going on under the hood, please follow the link to our source code in the top right corner of the window.
+  
+  The goal of our project was to learn about how the Tour de France, how the race has changed overtime, and how doping has played a role towards the front of the race. 
+  
+  We hope that you enjoy this project as much as we enjoyed making it!
 
 ####Sources 
-- Tour De France Winners
-    - https://en.wikipedia.org/wiki/List_of_Tour_de_France_general_classification_winners
+- Tour De France [Winners](https://en.wikipedia.org/wiki/List_of_Tour_de_France_general_classification_winners)
 
-- Tour De France Stage Wins per Rider
-    - https://en.wikipedia.org/wiki/Tour_de_France_records_and_statistics#Stage_wins_per_rider 
+- Tour De France [Stage Wins per Rider](https://en.wikipedia.org/wiki/Tour_de_France_records_and_statistics#Stage_wins_per_rider)
 
-- Athletes in the top 10 of any year after 1998 and whether they have been caught doping as well as a general summary table. 
-    - https://en.wikipedia.org/wiki/Doping_at_the_Tour_de_France
+- Athletes in the top 10 of any year after 1998 and whether they have been caught doping as well as a general [summary table](https://en.wikipedia.org/wiki/Doping_at_the_Tour_de_France).
+
+####Packages
+- shiny
+- flexdashboard
+- tidyverse
+- plotly
+
+Column {data-width=600}
+-------------------------
+ 
+
+<center>
+
+![Riders at the 2017 Tour de France](bikers.jpg)
+
+</center>
 
 Countries of Winners (Map)
 ==========================
@@ -250,7 +269,7 @@ Interactive Table
 inputPanel(
   sliderInput("slider1", label = h3("Year"), min = 1998, 
         max = 2015, value = c(1998, 2015), sep = ""),
-  textInput("text", label = h3("Key Words (Accepts RegEx)"), value = NULL , placeholder = "Eg. EPO")
+  textInput("text", label = h3("Key Words"), value = NULL , placeholder = "Eg. EPO")
 )
 
 renderTable({ 
