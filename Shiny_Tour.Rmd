@@ -245,7 +245,7 @@ Interactive Table
 inputPanel(
   sliderInput("slider1", label = h3("Year"), min = 1998, 
         max = 2015, value = c(1998, 2015), sep = ""),
-  textInput("text", label = h3("Key Words"), value = NULL , placeholder = "Eg. EPO")
+  textInput("text", label = h3("Key Words (Accepts RegEx)"), value = NULL , placeholder = "Eg. EPO")
 )
 
 renderTable({ 
