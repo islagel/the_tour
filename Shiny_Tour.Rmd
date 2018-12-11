@@ -34,7 +34,7 @@ Column
 ####Methodology
   To create this page we scraped data on the Tour de France from the sources listed below. Using R we tidied this data and created a Shiny app which allows the user to interact with our data. If your interested in what is going on under the hood, please follow the link to our source code in the top right corner of the window.
   
-  The goal of our project was to learn about how the Tour de France, how the race has changed overtime, and how doping has played a role towards the front of the race. 
+  The goal of our project was to learn about the Tour de France, how the race has changed over time, and how doping has played a role near the front of the race. 
   
   We hope that you enjoy this project as much as we enjoyed making it!
 
@@ -145,7 +145,8 @@ Inputs {.sidebar}
 ```{r , echo=FALSE}
 inputPanel(
   selectInput("b", label = h6("Countries:"), c(tour_data$Country[!is.na(tour_data$Country)]), multiple = TRUE, selected = c("United States", "France")),
-  checkboxInput("doped2", label = h6("Fill by Known Doping Status"), FALSE)
+  checkboxInput("doped2", label = h6("Fill by Known Doping Status"), FALSE),
+  checkboxInput("fix", label = h6("Fix Y Axis"), TRUE)
 )
 ```
 
@@ -157,19 +158,33 @@ Column
 
 renderPlot({
 
-
-
 tour_data2 <- tour_data %>%
   left_join(doping_tibble, by = c("Cyclist" = "Name"))%>%
     filter(Country %in% input$b)
 
-
-if(input$doped2){
+if(input$fix){
+      if(input$doped2){
+    tour_data2 %>%
+        mutate(Clean = ifelse(tour_data2$Status == "Never failed tests" | is.na(Status), "Not Proven Doped", "Doped")) %>%
+        ggplot(mapping = aes(x = Country, fill = Clean )) +
+        geom_bar(stat = "count") +
+        ylim(0,40) +
+        labs(fill = "Status") +
+        theme(legend.box.background = element_rect(colour = "black"))
+    }else {
+    tour_data2 %>%
+        mutate(Clean = ifelse(tour_data2$Status == "Never failed tests" | is.na(Status), "Not Proven Doped", "Doped")) %>%
+        ggplot(mapping = aes(x = Country)) +
+        geom_bar(stat = "count") +
+        ylim(0,40) +
+        labs(fill = "Status") +
+        theme(legend.box.background = element_rect(colour = "black"))
+}
+  } else if(input$doped2){
 tour_data2 %>%
     mutate(Clean = ifelse(tour_data2$Status == "Never failed tests" | is.na(Status), "Not Proven Doped", "Doped")) %>%
     ggplot(mapping = aes(x = Country, fill = Clean )) +
     geom_bar(stat = "count") +
-    ylim(0,40) +
     labs(fill = "Status") +
     theme(legend.box.background = element_rect(colour = "black"))
 }else {
@@ -177,7 +192,6 @@ tour_data2 %>%
     mutate(Clean = ifelse(tour_data2$Status == "Never failed tests" | is.na(Status), "Not Proven Doped", "Doped")) %>%
     ggplot(mapping = aes(x = Country)) +
     geom_bar(stat = "count") +
-    ylim(0,40) +
     labs(fill = "Status") +
     theme(legend.box.background = element_rect(colour = "black"))
 }
@@ -190,10 +204,10 @@ tour_data2 %>%
   This barplot provides another visualization of the number of winners any given country has had in the Tour de France. This plot also allows us to differentiate by doping status. 
 
 
-When looking comparing all countries who have had winners we see that France has had the greatest overall success, but they have also have the greatest number of doped athletes. Belgium follows France with the second largest number of wins, but also has had some doped athletes. Countries who have had winners who have doped include: France, Belgium, Spain, Italy, the U.S., and the Netherlands.
+  When looking comparing all countries who have had winners we see that France has had the greatest overall success, but they have also have the greatest number of doped athletes. Belgium follows France with the second largest number of wins, but also has had some doped athletes. Countries who have had winners who have doped include: France, Belgium, Spain, Italy, the U.S., and the Netherlands.
 
 
-For countries outside of Europe, the U.S. has had the most success but over half of their wins have been from doped riders (6 of which were Lance Armstrong). Australia is the only other country outside of Europe that has had a cyclist win the Tour de France.
+  For countries outside of Europe, the U.S. has had the most success but over half of their wins have been from doped riders (6 of which were Lance Armstrong). Australia is the only other country outside of Europe that has had a cyclist win the Tour de France.
 
 
 It is important to note that a single athlete, doped or not doped, can win the Tour de France multiple years. This means that within a single country such as the U.S., only two riders, Greg Lemond and Lance Armstrong, have contributed to the 10 wins for the country. With Armstrong's doped status, the barplot shows 6 of the wins as doped wins and 4 as clean wins. Other countries also have cyclists, both doped and not doped, that have won more than one year of the Tour de France, and this should be considered in your analysis.
