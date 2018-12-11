@@ -1,5 +1,5 @@
 ---
-title: ' '
+title: ''
 runtime: shiny
 output: 
   flexdashboard::flex_dashboard:
