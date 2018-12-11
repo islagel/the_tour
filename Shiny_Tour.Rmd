@@ -132,7 +132,7 @@ inputPanel(
 
 Column 
 -------------------------
-### Barplot
+### Countries of Winners: 1903-2018
 
 ```{r, echo = FALSE}
 
@@ -149,12 +149,18 @@ if(input$doped2){
 tour_data2 %>%
     mutate(Clean = ifelse(tour_data2$Status == "Never failed tests" | is.na(Status), "Not Proven Doped", "Doped")) %>%
     ggplot(mapping = aes(x = Country, fill = Clean )) +
-    geom_bar(stat = "count")
+    geom_bar(stat = "count") +
+    ylim(0,40) +
+    labs(fill = "Status") +
+    theme(legend.box.background = element_rect(colour = "black"))
 }else {
 tour_data2 %>%
     mutate(Clean = ifelse(tour_data2$Status == "Never failed tests" | is.na(Status), "Not Proven Doped", "Doped")) %>%
     ggplot(mapping = aes(x = Country)) +
-    geom_bar(stat = "count")
+    geom_bar(stat = "count") +
+    ylim(0,40) +
+    labs(fill = "Status") +
+    theme(legend.box.background = element_rect(colour = "black"))
 }
 })
 
@@ -177,7 +183,7 @@ mergedtop_tens2 <- mergedtop_tens %>%
   mutate(Notes2 = ifelse(Notes2 == "Admitted to doping without failed tests or sanction for the current race.", "Admitted, No Failed Tests", Notes2)) %>%
   mutate(Notes2 = ifelse(Notes2 == "Accused of doping without failed tests, sanction or admittance in their career.", "Accused, No Failed Tests", Notes2)) %>%
   mutate(Notes2 = ifelse(Notes2 == "Has never been: stripped of a title, failed tests or sanctioned for doping to date, with no known accusations.", "Clean", Notes2)) %>%
-  mutate(Notes2 = ifelse(Notes2 == "Stripped of title in the current race due to doping.", "Stripped of title", Notes2)) %>%
+  mutate(Notes2 = ifelse(Notes2 == "Stripped of title in the current race due to doping.", "Stripped of Title", Notes2)) %>%
   mutate(Notes2 = ifelse(Notes2 == "Failed tests for doping in another competition or out of competition at some point in their career.", "Failed Tests at Some Point", Notes2)) %>%
   mutate(Notes2 = ifelse(Notes2 == "Sanctioned for doping without failed tests at some point in their career.", "Sanctioned for Doping, No Failed Tests", Notes2))
 ```
@@ -186,7 +192,7 @@ mergedtop_tens2 <- mergedtop_tens %>%
 
 ```{r, echo = FALSE}
 inputPanel(checkboxGroupInput("x", label = h3("Fill Variable"),
-    choices = c("Stripped of title" = "Stripped of title",
+    choices = c("Stripped of Title" = "Stripped of Title",
                 "Failed Tests at Some Point" = "Failed Tests at Some Point",
                 "Sanctioned for Doping, No Failed Tests" = "Sanctioned for Doping, No Failed Tests",
                 "Admitted, No Failed Tests" = "Admitted, No Failed Tests",
