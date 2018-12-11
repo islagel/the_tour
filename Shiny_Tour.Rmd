@@ -167,11 +167,13 @@ tour_data2 %>%
 ```
 
 ### Description
-This barplot provides another visualization of the number of winners any given country has had in the Tour de France. This plot also allows us to differentiate by doping status. 
-\n
-When looking comparing all countries who have had winners we see that France has had the greatest overall success, but they have also have the greatest number of doped athletes. 
-\n
-For countries outside of Europe, the U.S. has had the most success but over half of their wins have been from doped riders (6 of which were Lance Armstrong).
+  This barplot provides another visualization of the number of winners any given country has had in the Tour de France. This plot also allows us to differentiate by doping status. 
+
+
+  When looking comparing all countries who have had winners we see that France has had the greatest overall success, but they have also have the greatest number of doped athletes. 
+
+
+  For countries outside of Europe, the U.S. has had the most success but over half of their wins have been from doped riders (6 of which were Lance Armstrong).
 
 Doping in Top Finishers
 ===========================
@@ -293,7 +295,7 @@ inputPanel(
 
 Column
 -------------------------------------
-
+### 
 
 ```{r, echo=FALSE}
 renderPlotly(
